@@ -18,7 +18,7 @@ class RoleAndPermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Filament Shield Permission Naming Convention အတိုင်း Permissions ဖန်တီးခြင်း
-        $resources = ['User', 'Role', 'Permission'];
+        $resources = ['User', 'Role', 'Permission', 'Post', 'Category'];
         $permissions = [];
 
         foreach ($resources as $resource) {

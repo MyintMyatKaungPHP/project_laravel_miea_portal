@@ -40,5 +40,11 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         $user->assignRole('user');
+
+        // Blog Categories နဲ့ Posts ဖန်တီးခြင်း
+        $this->call([
+            CategorySeeder::class,
+            PostSeeder::class,
+        ]);
     }
 }
