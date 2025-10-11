@@ -45,6 +45,11 @@ class RoleResource extends Resource
         return 'User Management';
     }
 
+    public static function getNavigationSort(): ?int
+    {
+        return 2;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
