@@ -31,6 +31,15 @@ class UserForm
                         DateTimePicker::make('email_verified_at')
                             ->label(__('users.fields.email_verified_at')),
                     ]),
+                Section::make(__('users.sections.roles'))
+                    ->schema([
+                        Select::make('roles')
+                            ->label(__('users.fields.roles'))
+                            ->multiple()
+                            ->relationship('roles', 'name')
+                            ->preload()
+                            ->searchable(),
+                    ]),
                 Section::make(__('users.sections.password'))
                     ->schema([
                         TextInput::make('password')
@@ -48,15 +57,6 @@ class UserForm
                             ->required(fn(string $context): bool => $context === 'create')
                             ->dehydrated(false)
                             ->validationAttribute(__('users.fields.password_confirmation')),
-                    ]),
-                Section::make(__('users.sections.roles'))
-                    ->schema([
-                        Select::make('roles')
-                            ->label(__('users.fields.roles'))
-                            ->multiple()
-                            ->relationship('roles', 'name')
-                            ->preload()
-                            ->searchable(),
                     ]),
             ]);
     }

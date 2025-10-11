@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Roles\Schemas;
 
 use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -12,7 +11,7 @@ class RoleForm
 {
     public static function configure(Schema $schema): Schema
     {
-        // Group permissions by resource
+        // Group permissions by resource (following Shield's approach)
         $permissions = \Spatie\Permission\Models\Permission::all();
         $groupedPermissions = [];
 
@@ -28,18 +27,30 @@ class RoleForm
 
         ksort($groupedPermissions);
 
-        // Create CheckboxList for each resource group
-        $permissionComponents = [];
+        // Create sections for each resource group (Shield-style)
+        $permissionSections = [];
         foreach ($groupedPermissions as $resource => $perms) {
-            $permissionIds = collect($perms)->pluck('id')->toArray();
-            $permissionComponents[] = Section::make($resource . ' Permissions')
+            $permissionSections[] = Section::make($resource)
                 ->schema([
                     CheckboxList::make('permissions')
                         ->label(false)
-                        ->relationship('permissions', 'name')
-                        ->options(collect($perms)->pluck('name', 'id')->toArray())
+                        ->options(function () use ($perms) {
+                            $options = [];
+                            foreach ($perms as $perm) {
+                                if (strpos($perm->name, ':') !== false) {
+                                    $action = explode(':', $perm->name)[0];
+                                    // Convert camelCase to Title Case with spaces
+                                    $label = preg_replace('/([a-z])([A-Z])/', '$1 $2', $action);
+                                } else {
+                                    $label = $perm->name;
+                                }
+                                $options[$perm->id] = $label;
+                            }
+                            return $options;
+                        })
                         ->columns(2)
-                        ->bulkToggleable(),
+                        ->bulkToggleable()
+                        ->live(),
                 ])
                 ->compact()
                 ->collapsible();
@@ -59,10 +70,13 @@ class RoleForm
                             ->default('web')
                             ->required()
                             ->maxLength(255),
-                    ]),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
                 Section::make(__('roles.sections.permissions'))
-                    ->schema($permissionComponents)
-                    ->columns(2),
+                    ->schema($permissionSections)
+                    ->columns(3)
+                    ->columnSpanFull(),
             ]);
     }
 }

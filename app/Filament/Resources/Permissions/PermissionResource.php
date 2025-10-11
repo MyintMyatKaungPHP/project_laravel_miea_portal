@@ -24,6 +24,11 @@ class PermissionResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'User Management';
+    }
+
     public static function getNavigationLabel(): string
     {
         return __('permissions.resource.plural_label');
