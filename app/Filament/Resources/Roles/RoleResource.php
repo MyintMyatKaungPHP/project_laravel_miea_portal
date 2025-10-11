@@ -168,4 +168,16 @@ class RoleResource extends Resource
     {
         return FilamentShieldPlugin::get();
     }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Hide super_admin role from non-super-admins
+        if (!auth()->user()?->hasRole('super_admin')) {
+            $query->where('name', '!=', 'super_admin');
+        }
+
+        return $query;
+    }
 }

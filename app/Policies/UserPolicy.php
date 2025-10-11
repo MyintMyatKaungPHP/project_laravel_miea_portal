@@ -18,6 +18,11 @@ class UserPolicy
 
     public function view(User $authUser, User $user): bool
     {
+        // Admin cannot view users with super_admin role
+        if ($user->hasRole('super_admin') && !$authUser->hasRole('super_admin')) {
+            return false;
+        }
+
         return $authUser->can('View:User');
     }
 
@@ -28,11 +33,21 @@ class UserPolicy
 
     public function update(User $authUser, User $user): bool
     {
+        // Admin cannot update users with super_admin role
+        if ($user->hasRole('super_admin') && !$authUser->hasRole('super_admin')) {
+            return false;
+        }
+
         return $authUser->can('Update:User');
     }
 
     public function delete(User $authUser, User $user): bool
     {
+        // Admin cannot delete users with super_admin role
+        if ($user->hasRole('super_admin') && !$authUser->hasRole('super_admin')) {
+            return false;
+        }
+
         return $authUser->can('Delete:User');
     }
 

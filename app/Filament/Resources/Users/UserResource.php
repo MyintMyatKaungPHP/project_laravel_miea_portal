@@ -75,4 +75,18 @@ class UserResource extends Resource
             'edit' => EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Hide users with super_admin role from non-super-admins
+        if (!auth()->user()?->hasRole('super_admin')) {
+            $query->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'super_admin');
+            });
+        }
+
+        return $query;
+    }
 }
