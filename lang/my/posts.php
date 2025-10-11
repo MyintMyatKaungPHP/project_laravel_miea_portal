@@ -12,6 +12,7 @@ return [
 
     'fields' => [
         'thumbnail' => 'ပုံ',
+        'images' => 'ပုံများ',
         'title' => 'ခေါင်းစဉ်',
         'color' => 'အရောင်',
         'slug' => 'စလပ်',

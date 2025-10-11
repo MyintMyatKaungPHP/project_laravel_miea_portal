@@ -50,6 +50,8 @@ class PostForm
                         MarkdownEditor::make('content')
                             ->label(__('posts.fields.content'))
                             ->required()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('posts/content-images')
                             ->columnSpanFull(),
                     ])
                     ->columns(2)
@@ -64,7 +66,22 @@ class PostForm
                                 FileUpload::make('thumbnail')
                                     ->label(__('posts.fields.thumbnail'))
                                     ->disk('public')
-                                    ->directory('thumbnails'),
+                                    ->directory('thumbnails')
+                                    ->visibility('public')
+                                    ->image()
+                                    ->maxSize(2048),
+
+                                FileUpload::make('images')
+                                    ->label(__('posts.fields.images'))
+                                    ->disk('public')
+                                    ->directory('posts/images')
+                                    ->visibility('public')
+                                    ->image()
+                                    ->multiple()
+                                    ->maxFiles(10)
+                                    ->maxSize(2048)
+                                    ->reorderable()
+                                    ->helperText('Upload up to 10 images for this post'),
                             ]),
 
                         Section::make(__('posts.sections.meta'))

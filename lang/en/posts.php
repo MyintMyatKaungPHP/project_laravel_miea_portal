@@ -12,6 +12,7 @@ return [
 
     'fields' => [
         'thumbnail' => 'Thumbnail',
+        'images' => 'Gallery Images',
         'title' => 'Title',
         'color' => 'Color',
         'slug' => 'Slug',

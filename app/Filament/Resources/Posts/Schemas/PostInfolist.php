@@ -89,6 +89,15 @@ class PostInfolist
                     ->label(__('posts.fields.content'))
                     ->html()
                     ->columnSpanFull(),
+
+                ImageEntry::make('gallery_images')
+                    ->label(__('posts.fields.images'))
+                    ->disk('public')
+                    ->visibility('public')
+                    ->state(fn(Post $record) => $record->images->pluck('path')->toArray())
+                    ->placeholder('No images')
+                    ->columnSpanFull()
+                    ->limit(10),
             ]);
     }
 }
