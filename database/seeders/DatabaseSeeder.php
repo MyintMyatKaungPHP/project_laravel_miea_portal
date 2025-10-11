@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             PostSeeder::class,
+            // ApiDocsSeeder::class, // Disabled - using markdown documentation instead
         ]);
     }
 }

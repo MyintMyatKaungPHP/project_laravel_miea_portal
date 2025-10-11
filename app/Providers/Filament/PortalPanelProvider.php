@@ -5,7 +5,6 @@ namespace App\Providers\Filament;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use ZPMLabs\FilamentApiDocsBuilder\FilamentApiDocsBuilderPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -70,7 +69,6 @@ class PortalPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                FilamentApiDocsBuilderPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
