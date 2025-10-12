@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'email',
         'password',
         'email_verified_at',
+        'profile_image',
     ];
 
     /**
@@ -82,13 +84,8 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $profileImage = $this->images()
-                    ->where('imageable_type', User::class)
-                    ->where('imageable_id', $this->id)
-                    ->first();
-
-                if ($profileImage) {
-                    return '/storage/' . $profileImage->path;
+                if ($this->profile_image) {
+                    return asset('storage/' . $this->profile_image);
                 }
 
                 return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
@@ -101,20 +98,12 @@ class User extends Authenticatable
      */
     public function getFilamentAvatarUrl(): ?string
     {
-        // Use fresh query to avoid caching issues
-        $profileImage = $this->images()
-            ->where('imageable_type', self::class)
-            ->where('imageable_id', $this->id)
-            ->latest()
-            ->first();
-
-        if ($profileImage && $profileImage->path) {
-            $url = '/storage/' . $profileImage->path;
-            // Add timestamp to prevent browser caching
-            return $url . '?t=' . $profileImage->updated_at->timestamp;
+        if ($this->profile_image) {
+            return asset('storage/' . $this->profile_image);
         }
 
-        return null;
+        // Return default avatar with user's name
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
     /**

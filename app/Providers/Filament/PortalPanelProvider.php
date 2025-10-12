@@ -44,7 +44,7 @@ class PortalPanelProvider extends PanelProvider
             ->default()
             ->id('portal')
             ->path('portal')
-            ->registration()
+            ->registration(\App\Filament\Pages\Auth\Register::class)
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -68,7 +68,7 @@ class PortalPanelProvider extends PanelProvider
                     ->collapsed(false),
             ])
             ->userMenuItems([
-                'profile' => MenuItem::make()
+                MenuItem::make()
                     ->label(fn() => auth()->user()->name)
                     ->url(fn() => ProfileResource::getUrl('edit'))
                     ->icon('heroicon-o-user-circle'),

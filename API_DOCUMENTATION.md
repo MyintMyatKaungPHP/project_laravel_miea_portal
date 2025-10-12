@@ -20,19 +20,26 @@ Base Path: `/api/auth`
 
 ### Register
 
-Register a new user account.
+Register a new user account with optional profile image.
 
 ```http
 POST /api/auth/register
-Content-Type: application/json
+Content-Type: multipart/form-data
 
-{
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "password123",
-    "password_confirmation": "password123"
-}
+name: John Doe
+email: john@example.com
+password: password123
+password_confirmation: password123
+profile_image: [file] (optional)
 ```
+
+**Fields:**
+
+-   `name` (required): User's full name
+-   `email` (required): User's email address
+-   `password` (required): Password (min 8 characters)
+-   `password_confirmation` (required): Password confirmation
+-   `profile_image` (optional): Profile image file (jpeg, png, jpg, gif, max 2MB)
 
 **Response (201):**
 
@@ -45,12 +52,24 @@ Content-Type: application/json
             "id": 1,
             "name": "John Doe",
             "email": "john@example.com",
+            "profile_image_url": "http://project_laravel_miea_portal.test/storage/profile_images/123456_abc.png",
             "created_at": "2025-10-11T10:00:00.000000Z"
         },
         "access_token": "1|abcdef123456...",
         "token_type": "Bearer"
     }
 }
+```
+
+**cURL Example:**
+
+```bash
+curl -X POST http://project_laravel_miea_portal.test/api/auth/register \
+  -F "name=John Doe" \
+  -F "email=john@example.com" \
+  -F "password=password123" \
+  -F "password_confirmation=password123" \
+  -F "profile_image=@/path/to/image.png"
 ```
 
 ### Login
@@ -325,6 +344,255 @@ Authorization: Bearer {token}
 {
     "success": false,
     "message": "No profile picture to delete"
+}
+```
+
+---
+
+## User Management API
+
+Base Path: `/api/users`
+
+All user management endpoints require authentication (`Authorization: Bearer {token}`).
+
+### List Users
+
+Get paginated list of users with optional search and filters.
+
+```http
+GET /api/users
+Authorization: Bearer {token}
+```
+
+**Query Parameters:**
+
+-   `per_page` (optional) - Number of items per page (default: 15)
+-   `search` (optional) - Search by name or email
+-   `email_verified` (optional) - Filter by verification status (`true` or `false`)
+-   `page` (optional) - Page number
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 1,
+                "name": "John Doe",
+                "email": "john@example.com",
+                "profile_image": "users/profiles/profile_1.jpg",
+                "email_verified_at": "2025-10-11T10:00:00.000000Z",
+                "roles": [
+                    {
+                        "id": 1,
+                        "name": "admin"
+                    }
+                ],
+                "created_at": "2025-10-11T10:00:00.000000Z",
+                "updated_at": "2025-10-12T15:30:00.000000Z"
+            }
+        ],
+        "per_page": 15,
+        "total": 50
+    }
+}
+```
+
+### Create User
+
+Create a new user account.
+
+```http
+POST /api/users
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123",
+    "profile_image": (file),
+    "roles": ["user"]
+}
+```
+
+**Response (201):**
+
+```json
+{
+    "success": true,
+    "message": "User created successfully",
+    "data": {
+        "id": 5,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "profile_image": "users/profiles/profile_1234567890.jpg",
+        "email_verified_at": null,
+        "roles": [
+            {
+                "id": 2,
+                "name": "user"
+            }
+        ],
+        "created_at": "2025-10-12T16:00:00.000000Z",
+        "updated_at": "2025-10-12T16:00:00.000000Z"
+    }
+}
+```
+
+### Get User
+
+Get details of a specific user.
+
+```http
+GET /api/users/{id}
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "profile_image": "users/profiles/profile_1.jpg",
+        "email_verified_at": "2025-10-11T10:00:00.000000Z",
+        "roles": [
+            {
+                "id": 1,
+                "name": "admin"
+            }
+        ],
+        "created_at": "2025-10-11T10:00:00.000000Z",
+        "updated_at": "2025-10-12T15:30:00.000000Z"
+    }
+}
+```
+
+### Update User
+
+Update an existing user.
+
+```http
+PUT /api/users/{id}
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+{
+    "name": "John Updated",
+    "email": "john.updated@example.com",
+    "profile_image": (file),
+    "email_verified_at": "2025-10-12T10:00:00.000000Z",
+    "roles": ["admin", "user"]
+}
+```
+
+**Note:** All fields are optional. Password update is also optional with confirmation:
+
+```json
+{
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "User updated successfully",
+    "data": {
+        "id": 1,
+        "name": "John Updated",
+        "email": "john.updated@example.com",
+        "profile_image": "users/profiles/profile_1_1728745632.jpg",
+        "email_verified_at": "2025-10-12T10:00:00.000000Z",
+        "roles": [
+            {
+                "id": 1,
+                "name": "admin"
+            },
+            {
+                "id": 2,
+                "name": "user"
+            }
+        ],
+        "updated_at": "2025-10-12T16:30:00.000000Z"
+    }
+}
+```
+
+### Delete User
+
+Delete a user account.
+
+```http
+DELETE /api/users/{id}
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "User deleted successfully"
+}
+```
+
+### Verify User Email
+
+Mark user's email as verified.
+
+```http
+POST /api/users/{id}/verify
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "User email verified successfully",
+    "data": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "email_verified_at": "2025-10-12T16:45:00.000000Z"
+    }
+}
+```
+
+### Unverify User Email
+
+Mark user's email as unverified.
+
+```http
+POST /api/users/{id}/unverify
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "User email unverified successfully",
+    "data": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "email_verified_at": null
+    }
 }
 ```
 
@@ -724,6 +992,57 @@ GET /api/blog/posts?page=2
 
 ## Example Usage
 
+### User Management Examples
+
+#### List Users with Search
+
+```bash
+curl -X GET "http://project_laravel_miea_portal.test/api/users?search=john&email_verified=true&per_page=20" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Accept: application/json"
+```
+
+#### Create User
+
+```bash
+curl -X POST "http://project_laravel_miea_portal.test/api/users" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -F "name=John Doe" \
+  -F "email=john@example.com" \
+  -F "password=password123" \
+  -F "password_confirmation=password123" \
+  -F "profile_image=@/path/to/profile.jpg" \
+  -F "roles[]=user"
+```
+
+#### Update User
+
+```bash
+curl -X PUT "http://project_laravel_miea_portal.test/api/users/5" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -F "name=John Updated" \
+  -F "email=john.updated@example.com" \
+  -F "profile_image=@/path/to/new-profile.jpg" \
+  -F "roles[]=admin" \
+  -F "roles[]=user"
+```
+
+#### Verify User Email
+
+```bash
+curl -X POST "http://project_laravel_miea_portal.test/api/users/5/verify" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Accept: application/json"
+```
+
+#### Delete User
+
+```bash
+curl -X DELETE "http://project_laravel_miea_portal.test/api/users/5" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Accept: application/json"
+```
+
 ### Profile Management Examples
 
 #### Get Current Profile
@@ -878,6 +1197,17 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `POST /api/profile/avatar` - Upload profile picture (protected)
 -   `DELETE /api/profile/avatar` - Delete profile picture (protected)
 
+### User Management (8 endpoints)
+
+-   `GET /api/users` - List all users (protected)
+-   `POST /api/users` - Create new user (protected)
+-   `GET /api/users/{id}` - Get user details (protected)
+-   `PUT /api/users/{id}` - Update user (protected)
+-   `PATCH /api/users/{id}` - Partial update user (protected)
+-   `DELETE /api/users/{id}` - Delete user (protected)
+-   `POST /api/users/{id}/verify` - Verify user email (protected)
+-   `POST /api/users/{id}/unverify` - Unverify user email (protected)
+
 ### Blog Posts (11 endpoints)
 
 -   `GET /api/blog/posts` - List all posts
@@ -901,7 +1231,7 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `PUT /api/blog/categories/{id}` - Update category (protected)
 -   `DELETE /api/blog/categories/{id}` - Delete category (protected)
 
-**Total: 26 API endpoints**
+**Total: 34 API endpoints**
 
 ---
 

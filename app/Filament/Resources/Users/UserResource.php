@@ -44,6 +44,27 @@ class UserResource extends Resource
         return __('users.resource.plural_label');
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        $verified = static::getModel()::whereNotNull('email_verified_at')->count();
+        $notVerified = static::getModel()::whereNull('email_verified_at')->count();
+
+        return "✓ {$verified} | ✗ {$notVerified}";
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary'; // Filament default primary color
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        $verified = static::getModel()::whereNotNull('email_verified_at')->count();
+        $notVerified = static::getModel()::whereNull('email_verified_at')->count();
+
+        return "Verified: {$verified} | Not Verified: {$notVerified}";
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

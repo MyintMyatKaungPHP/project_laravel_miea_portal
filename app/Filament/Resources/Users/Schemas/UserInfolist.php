@@ -15,17 +15,11 @@ class UserInfolist
         return $schema
             ->columns(3)
             ->components([
-                ImageEntry::make('profile_image_display')
+                ImageEntry::make('profile_image')
                     ->label(__('users.fields.profile_image'))
                     ->disk('public')
-                    ->state(
-                        fn(User $record) => $record->images()
-                            ->where('imageable_type', \App\Models\User::class)
-                            ->where('imageable_id', $record->id)
-                            ->first()?->path
-                    )
                     ->circular()
-                    ->placeholder('No profile image')
+                    ->defaultImageUrl(fn(User $record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->name) . '&color=7F9CF5&background=EBF4FF')
                     ->columnSpan(1),
 
                 Section::make(__('users.sections.user_information'))

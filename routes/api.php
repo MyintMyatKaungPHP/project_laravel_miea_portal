@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProfileApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,18 @@ Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
     Route::post('/password', [ProfileApiController::class, 'changePassword']);
     Route::post('/avatar', [ProfileApiController::class, 'uploadAvatar']);
     Route::delete('/avatar', [ProfileApiController::class, 'deleteAvatar']);
+});
+
+// User Management API Routes
+Route::middleware('auth:sanctum')->prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'store']);
+    Route::get('/{user}', [UserController::class, 'show']);
+    Route::put('/{user}', [UserController::class, 'update']);
+    Route::patch('/{user}', [UserController::class, 'update']);
+    Route::delete('/{user}', [UserController::class, 'destroy']);
+    Route::post('/{user}/verify', [UserController::class, 'verify']);
+    Route::post('/{user}/unverify', [UserController::class, 'unverify']);
 });
 
 // Blog Management API Routes

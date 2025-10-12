@@ -46,6 +46,27 @@ class PostResource extends Resource
         return __('posts.resource.plural_label');
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        $published = static::getModel()::where('published', true)->count();
+        $unpublished = static::getModel()::where('published', false)->count();
+
+        return "✓ {$published} | ✗ {$unpublished}";
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary'; // Filament default primary color
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        $published = static::getModel()::where('published', true)->count();
+        $unpublished = static::getModel()::where('published', false)->count();
+
+        return "Published: {$published} | Unpublished: {$unpublished}";
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PostForm::configure($schema);

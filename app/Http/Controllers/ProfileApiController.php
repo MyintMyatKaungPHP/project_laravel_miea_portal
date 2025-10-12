@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use App\Models\Image;
 
 class ProfileApiController extends Controller
 {
@@ -143,10 +142,8 @@ class ProfileApiController extends Controller
         }
 
         // Delete old profile image if exists
-        $oldImage = $user->images()->where('type', 'profile')->first();
-        if ($oldImage) {
-            Storage::disk('public')->delete($oldImage->path);
-            $oldImage->delete();
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
         }
 
         // Store new image
@@ -154,13 +151,8 @@ class ProfileApiController extends Controller
         $filename = 'profile_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
         $path = $file->storeAs('profile_images', $filename, 'public');
 
-        // Create image record
-        $image = new Image();
-        $image->path = $path;
-        $image->type = 'profile';
-        $image->imageable_id = $user->id;
-        $image->imageable_type = get_class($user);
-        $image->save();
+        // Update user profile_image
+        $user->update(['profile_image' => $path]);
 
         return response()->json([
             'success' => true,
@@ -181,9 +173,7 @@ class ProfileApiController extends Controller
     {
         $user = $request->user();
 
-        $profileImage = $user->images()->where('type', 'profile')->first();
-
-        if (!$profileImage) {
+        if (!$user->profile_image) {
             return response()->json([
                 'success' => false,
                 'message' => 'No profile picture to delete',
@@ -191,10 +181,10 @@ class ProfileApiController extends Controller
         }
 
         // Delete file from storage
-        Storage::disk('public')->delete($profileImage->path);
+        Storage::disk('public')->delete($user->profile_image);
 
-        // Delete image record
-        $profileImage->delete();
+        // Clear profile_image field
+        $user->update(['profile_image' => null]);
 
         return response()->json([
             'success' => true,

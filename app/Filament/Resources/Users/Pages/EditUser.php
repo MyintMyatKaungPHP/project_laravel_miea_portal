@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
-use App\Models\Image;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -24,15 +23,8 @@ class EditUser extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        // Load existing profile image from images table
-        $profileImage = $this->record->images()
-            ->where('imageable_type', \App\Models\User::class)
-            ->where('imageable_id', $this->record->id)
-            ->first();
-
-        if ($profileImage) {
-            $data['profile_image'] = $profileImage->path;
-        }
+        // Set is_verified toggle state based on email_verified_at
+        $data['is_verified'] = $this->record->email_verified_at !== null;
 
         return $data;
     }
@@ -61,43 +53,13 @@ class EditUser extends EditRecord
             // This ensures the field is properly updated in database
         }
 
-        // Store new profile image temporarily
-        if (isset($data['profile_image'])) {
-            $this->cachedProfileImage = $data['profile_image'];
-            unset($data['profile_image']);
+        // Delete old profile image if new one uploaded
+        if (isset($data['profile_image']) && $data['profile_image'] !== $this->record->profile_image) {
+            if ($this->record->profile_image) {
+                Storage::disk('public')->delete($this->record->profile_image);
+            }
         }
 
         return $data;
     }
-
-    protected function afterSave(): void
-    {
-        // Get existing profile image
-        $existingImage = $this->record->images()
-            ->where('imageable_type', \App\Models\User::class)
-            ->where('imageable_id', $this->record->id)
-            ->first();
-
-        // If new image is different from existing
-        if ($this->cachedProfileImage !== $existingImage?->path) {
-            // Delete old image
-            if ($existingImage) {
-                Storage::disk('public')->delete($existingImage->path);
-                $existingImage->delete();
-            }
-
-            // Save new image
-            if (!empty($this->cachedProfileImage)) {
-                Image::create([
-                    'path' => $this->cachedProfileImage,
-                    'imageable_type' => \App\Models\User::class,
-                    'imageable_id' => $this->record->id,
-                    'user_id' => $this->record->id,
-                    'post_id' => null,
-                ]);
-            }
-        }
-    }
-
-    protected ?string $cachedProfileImage = null;
 }

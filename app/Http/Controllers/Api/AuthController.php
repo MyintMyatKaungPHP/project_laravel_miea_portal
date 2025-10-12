@@ -22,6 +22,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -31,10 +32,19 @@ class AuthController extends Controller
             ], 422);
         }
 
+        // Handle profile image upload
+        $profileImagePath = null;
+        if ($request->hasFile('profile_image')) {
+            $file = $request->file('profile_image');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $profileImagePath = $file->storeAs('profile_images', $filename, 'public');
+        }
+
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
+            'profile_image' => $profileImagePath,
         ]);
 
         // Create token
@@ -44,7 +54,13 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'User registered successfully.',
             'data' => [
-                'user' => $user,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'profile_image_url' => $user->profile_image_url,
+                    'created_at' => $user->created_at,
+                ],
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ],
