@@ -5,6 +5,11 @@ return [
         'label' => 'Permission',
         'plural_label' => 'Permissions',
     ],
+
+    'navigation' => [
+        'group' => 'User Management',
+    ],
+
     'fields' => [
         'id' => 'ID',
         'name' => 'Name',

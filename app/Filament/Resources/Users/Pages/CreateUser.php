@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
+use App\Models\Image;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
 
@@ -28,6 +29,28 @@ class CreateUser extends CreateRecord
             }
         }
 
+        // Store profile image temporarily
+        if (isset($data['profile_image'])) {
+            $this->cachedProfileImage = $data['profile_image'];
+            unset($data['profile_image']);
+        }
+
         return $data;
     }
+
+    protected function afterCreate(): void
+    {
+        // Save profile image to images table
+        if (!empty($this->cachedProfileImage)) {
+            Image::create([
+                'path' => $this->cachedProfileImage,
+                'imageable_type' => \App\Models\User::class,
+                'imageable_id' => $this->record->id,
+                'user_id' => $this->record->id,
+                'post_id' => null,
+            ]);
+        }
+    }
+
+    protected ?string $cachedProfileImage = null;
 }

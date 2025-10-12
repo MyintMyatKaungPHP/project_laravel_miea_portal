@@ -47,15 +47,41 @@ class RoleAndPermissionSeeder extends Seeder
         // Super Admin ကို permissions အားလုံးပေးခြင်း
         $superAdminRole->syncPermissions(Permission::all());
 
-        // Admin ကို view နဲ့ update permissions တွေပေးခြင်း
-        $adminPermissions = [];
-        foreach ($resources as $resource) {
-            $adminPermissions[] = "ViewAny:{$resource}";
-            $adminPermissions[] = "View:{$resource}";
-            $adminPermissions[] = "Update:{$resource}";
-        }
+        // Admin ကို specific permissions တွေပေးခြင်း (database အတိုင်း)
+        $adminPermissions = [
+            // User permissions
+            'ViewAny:User',
+            'View:User',
+            'Update:User',
+
+            // Post permissions (all)
+            'ViewAny:Post',
+            'View:Post',
+            'Create:Post',
+            'Update:Post',
+            'Delete:Post',
+            'Restore:Post',
+            'ForceDelete:Post',
+            'ForceDeleteAny:Post',
+            'RestoreAny:Post',
+            'Replicate:Post',
+            'Reorder:Post',
+
+            // Category permissions (all)
+            'ViewAny:Category',
+            'View:Category',
+            'Create:Category',
+            'Update:Category',
+            'Delete:Category',
+            'Restore:Category',
+            'ForceDelete:Category',
+            'ForceDeleteAny:Category',
+            'RestoreAny:Category',
+            'Replicate:Category',
+            'Reorder:Category',
+        ];
         $adminRole->syncPermissions($adminPermissions);
 
-        // User role မှာ basic permissions မပေးပါ
+        // User role မှာ permissions မပေးပါ
     }
 }

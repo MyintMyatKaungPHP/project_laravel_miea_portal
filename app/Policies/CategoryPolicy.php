@@ -4,66 +4,67 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CategoryPolicy
 {
     use HandlesAuthorization;
-
-    public function viewAny(User $authUser): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Category');
     }
 
-    public function view(User $authUser, Category $category): bool
+    public function view(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('View:Category');
     }
 
-    public function create(User $authUser): bool
+    public function create(AuthUser $authUser): bool
     {
         return $authUser->can('Create:Category');
     }
 
-    public function update(User $authUser, Category $category): bool
+    public function update(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('Update:Category');
     }
 
-    public function delete(User $authUser, Category $category): bool
+    public function delete(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('Delete:Category');
     }
 
-    public function restore(User $authUser, Category $category): bool
+    public function restore(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('Restore:Category');
     }
 
-    public function forceDelete(User $authUser, Category $category): bool
+    public function forceDelete(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('ForceDelete:Category');
     }
 
-    public function forceDeleteAny(User $authUser): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
         return $authUser->can('ForceDeleteAny:Category');
     }
 
-    public function restoreAny(User $authUser): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
         return $authUser->can('RestoreAny:Category');
     }
 
-    public function replicate(User $authUser, Category $category): bool
+    public function replicate(AuthUser $authUser, Category $category): bool
     {
         return $authUser->can('Replicate:Category');
     }
 
-    public function reorder(User $authUser): bool
+    public function reorder(AuthUser $authUser): bool
     {
         return $authUser->can('Reorder:Category');
     }
+
 }

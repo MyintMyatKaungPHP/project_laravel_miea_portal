@@ -5,6 +5,11 @@ return [
         'label' => 'User',
         'plural_label' => 'Users',
     ],
+
+    'navigation' => [
+        'group' => 'User Management',
+    ],
+
     'fields' => [
         'id' => 'ID',
         'name' => 'Name',
@@ -13,11 +18,13 @@ return [
         'password' => 'Password',
         'password_confirmation' => 'Password Confirmation',
         'roles' => 'Roles',
+        'profile_image' => 'Profile Picture',
         'created_at' => 'Created At',
         'updated_at' => 'Updated At',
     ],
     'sections' => [
         'user_information' => 'User Information',
+        'profile_image' => 'Profile Picture',
         'password' => 'Password',
         'roles' => 'Roles',
         'system_information' => 'System Information',

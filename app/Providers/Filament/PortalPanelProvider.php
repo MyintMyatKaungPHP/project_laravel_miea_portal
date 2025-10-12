@@ -7,7 +7,10 @@ use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
+use App\Filament\Resources\Profile\ProfileResource;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -55,6 +58,20 @@ class PortalPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label(fn() => __('posts.navigation.group'))
+                    ->collapsed(false),
+                NavigationGroup::make()
+                    ->label(fn() => __('users.navigation.group'))
+                    ->collapsed(false),
+            ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label(fn() => auth()->user()->name)
+                    ->url(fn() => ProfileResource::getUrl('edit'))
+                    ->icon('heroicon-o-user-circle'),
             ])
             ->middleware([
                 EncryptCookies::class,

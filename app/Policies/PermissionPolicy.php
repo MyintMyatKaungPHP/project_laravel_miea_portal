@@ -4,66 +4,67 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Permission;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PermissionPolicy
 {
     use HandlesAuthorization;
-
-    public function viewAny(User $authUser): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Permission');
     }
 
-    public function view(User $authUser, Permission $permission): bool
+    public function view(AuthUser $authUser, Permission $permission): bool
     {
         return $authUser->can('View:Permission');
     }
 
-    public function create(User $authUser): bool
+    public function create(AuthUser $authUser): bool
     {
         return $authUser->can('Create:Permission');
     }
 
-    public function update(User $authUser, Permission $permission): bool
+    public function update(AuthUser $authUser, Permission $permission): bool
     {
         return $authUser->can('Update:Permission');
     }
 
-    public function delete(User $authUser, Permission $permission): bool
+    public function delete(AuthUser $authUser, Permission $permission): bool
     {
         return $authUser->can('Delete:Permission');
     }
 
-    public function restore(User $authUser, Permission $permission): bool
+    public function restore(AuthUser $authUser, Permission $permission): bool
     {
         return $authUser->can('Restore:Permission');
     }
 
-    public function forceDelete(User $authUser, Permission $permission): bool
+    public function forceDelete(AuthUser $authUser, Permission $permission): bool
     {
         return $authUser->can('ForceDelete:Permission');
     }
 
-    public function forceDeleteAny(User $authUser): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
         return $authUser->can('ForceDeleteAny:Permission');
     }
 
-    public function restoreAny(User $authUser): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
         return $authUser->can('RestoreAny:Permission');
     }
 
-    public function replicate(User $authUser, Permission $permission): bool
+    public function replicate(AuthUser $authUser, Permission $permission): bool
     {
         return $authUser->can('Replicate:Permission');
     }
 
-    public function reorder(User $authUser): bool
+    public function reorder(AuthUser $authUser): bool
     {
         return $authUser->can('Reorder:Permission');
     }
+
 }

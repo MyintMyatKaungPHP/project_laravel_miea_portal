@@ -26,7 +26,7 @@ class PermissionResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return 'User Management';
+        return __('permissions.navigation.group');
     }
 
     public static function getNavigationLabel(): string
