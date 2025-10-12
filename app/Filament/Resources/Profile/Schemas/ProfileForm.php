@@ -35,15 +35,15 @@ class ProfileForm
                             ->columnSpanFull(),
 
                         Placeholder::make('account_status')
-                            ->label('Account Status')
+                            ->label(__('users.profile.account_status'))
                             ->content(fn($record) => $record?->email_verified_at
                                 ? new \Illuminate\Support\HtmlString('<span class="fi-badge fi-color-success inline-flex items-center justify-center gap-x-1 rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style="background-color: rgb(220, 252, 231); color: rgb(22, 101, 52); --c-50: rgb(240, 253, 244); --c-400: rgb(74, 222, 128); --c-600: rgb(22, 163, 74);">
                                     <svg class="fi-color-custom h-3 w-3 text-custom-600 dark:text-custom-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"></path></svg>
-                                    <span>Verified</span>
+                                    <span>' . __('users.profile.verified') . '</span>
                                 </span>')
                                 : new \Illuminate\Support\HtmlString('<span class="fi-badge fi-color-warning inline-flex items-center justify-center gap-x-1 rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" style="background-color: rgb(254, 243, 199); color: rgb(146, 64, 14); --c-50: rgb(254, 252, 232); --c-400: rgb(251, 191, 36); --c-600: rgb(202, 138, 4);">
                                     <svg class="fi-color-custom h-3 w-3 text-custom-600 dark:text-custom-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
-                                    <span>Not Verified</span>
+                                    <span>' . __('users.profile.not_verified') . '</span>
                                 </span>'))
                             ->columnSpanFull(),
 
@@ -51,7 +51,7 @@ class ProfileForm
                             ->label(__('users.fields.roles'))
                             ->content(function ($record) {
                                 if (!$record || !$record->roles || $record->roles->isEmpty()) {
-                                    return new \Illuminate\Support\HtmlString('<span class="text-gray-500 text-sm">No roles assigned</span>');
+                                    return new \Illuminate\Support\HtmlString('<span class="text-gray-500 text-sm">' . __('users.messages.no_roles') . '</span>');
                                 }
 
                                 $badges = $record->roles->map(function ($role) {
@@ -77,39 +77,39 @@ class ProfileForm
                             ->imageEditor()
                             ->circleCropper()
                             ->maxSize(2048)
-                            ->helperText('Upload a profile picture'),
+                            ->helperText(__('users.profile.upload_profile_picture')),
                     ])
                     ->columnSpan(1),
 
                 Section::make(__('users.sections.password'))
-                    ->description(__('Leave blank to keep current password'))
+                    ->description(__('users.profile.leave_blank'))
                     ->collapsed(false)
                     ->schema([
                         TextInput::make('current_password')
-                            ->label(__('Current Password'))
+                            ->label(__('users.profile.current_password'))
                             ->password()
                             ->revealable()
                             ->nullable()
                             ->requiredWith('password')
-                            ->helperText('Enter your current password to change it'),
+                            ->helperText(__('users.profile.helper_text.current_password')),
 
                         TextInput::make('password')
-                            ->label(__('New Password'))
+                            ->label(__('users.profile.new_password'))
                             ->password()
                             ->revealable()
                             ->nullable()
                             ->confirmed()
                             ->minLength(8)
                             ->dehydrated(fn($state) => filled($state))
-                            ->helperText('Minimum 8 characters'),
+                            ->helperText(__('users.profile.helper_text.new_password')),
 
                         TextInput::make('password_confirmation')
-                            ->label(__('Confirm New Password'))
+                            ->label(__('users.profile.confirm_password'))
                             ->password()
                             ->revealable()
                             ->nullable()
                             ->dehydrated(false)
-                            ->helperText('Re-enter your new password'),
+                            ->helperText(__('users.profile.helper_text.confirm_password')),
                     ])
                     ->columnSpanFull(),
             ]);

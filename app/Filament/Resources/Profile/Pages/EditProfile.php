@@ -20,12 +20,12 @@ class EditProfile extends EditRecord
 
     public function getTitle(): string | Htmlable
     {
-        return __('My Profile');
+        return __('users.profile.title');
     }
 
     public function getHeading(): string | Htmlable
     {
-        return __('My Profile');
+        return __('users.profile.title');
     }
 
 
@@ -76,7 +76,7 @@ class EditProfile extends EditRecord
         if (!empty($data['password'])) {
             if (empty($data['current_password'])) {
                 Notification::make()
-                    ->title(__('Current password is required to change password'))
+                    ->title(__('users.profile.current_password_required'))
                     ->danger()
                     ->send();
 
@@ -85,7 +85,7 @@ class EditProfile extends EditRecord
 
             if (!Hash::check($data['current_password'], $record->password)) {
                 Notification::make()
-                    ->title(__('Current password is incorrect'))
+                    ->title(__('users.profile.current_password_incorrect'))
                     ->danger()
                     ->send();
 
@@ -148,6 +148,6 @@ class EditProfile extends EditRecord
 
     protected function getSavedNotificationTitle(): ?string
     {
-        return __('Profile updated successfully');
+        return __('users.profile.update_success');
     }
 }

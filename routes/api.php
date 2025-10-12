@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\ProfileApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,15 @@ Route::prefix('auth')->group(function () {
 // Get authenticated user
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Profile Management API Routes
+Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
+    Route::get('/', [ProfileApiController::class, 'show']);
+    Route::put('/', [ProfileApiController::class, 'update']);
+    Route::post('/password', [ProfileApiController::class, 'changePassword']);
+    Route::post('/avatar', [ProfileApiController::class, 'uploadAvatar']);
+    Route::delete('/avatar', [ProfileApiController::class, 'deleteAvatar']);
 });
 
 // Blog Management API Routes

@@ -139,6 +139,197 @@ Authorization: Bearer {token}
 
 ---
 
+## Profile Management API
+
+Base Path: `/api/profile`
+
+All profile endpoints require authentication (`Authorization: Bearer {token}`).
+
+### Get Profile
+
+Get current authenticated user's profile information.
+
+```http
+GET /api/profile
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "email_verified_at": "2025-10-11T10:00:00.000000Z",
+        "profile_image_url": "http://project_laravel_miea_portal.test/storage/profile_images/profile_1_123456.jpg",
+        "roles": ["admin", "user"],
+        "created_at": "2025-10-11T10:00:00.000000Z",
+        "updated_at": "2025-10-12T15:30:00.000000Z"
+    }
+}
+```
+
+### Update Profile
+
+Update current user's profile information (name and email).
+
+```http
+PUT /api/profile
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "name": "John Updated",
+    "email": "john.updated@example.com"
+}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "Profile updated successfully",
+    "data": {
+        "id": 1,
+        "name": "John Updated",
+        "email": "john.updated@example.com",
+        "email_verified_at": "2025-10-11T10:00:00.000000Z",
+        "profile_image_url": "http://...",
+        "roles": ["admin", "user"],
+        "updated_at": "2025-10-12T16:00:00.000000Z"
+    }
+}
+```
+
+**Error Response (422):**
+
+```json
+{
+    "success": false,
+    "message": "Failed to update profile",
+    "errors": {
+        "email": ["The email has already been taken."]
+    }
+}
+```
+
+### Change Password
+
+Change current user's password.
+
+```http
+POST /api/profile/password
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "current_password": "oldpassword123",
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "Password changed successfully"
+}
+```
+
+**Error Response (422):**
+
+```json
+{
+    "success": false,
+    "message": "Current password is incorrect",
+    "errors": {
+        "current_password": ["Current password is incorrect"]
+    }
+}
+```
+
+### Upload Profile Picture
+
+Upload a new profile picture.
+
+```http
+POST /api/profile/avatar
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+{
+    "avatar": (file)
+}
+```
+
+**Validation Rules:**
+
+-   Required: Yes
+-   File Type: image (jpeg, png, jpg, gif)
+-   Max Size: 2MB (2048 KB)
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "Profile picture uploaded successfully",
+    "data": {
+        "profile_image_url": "http://project_laravel_miea_portal.test/storage/profile_images/profile_1_1728745632.jpg"
+    }
+}
+```
+
+**Error Response (422):**
+
+```json
+{
+    "success": false,
+    "message": "Invalid image file",
+    "errors": {
+        "avatar": [
+            "The avatar must be an image.",
+            "The avatar must not be greater than 2048 kilobytes."
+        ]
+    }
+}
+```
+
+### Delete Profile Picture
+
+Delete current user's profile picture.
+
+```http
+DELETE /api/profile/avatar
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "Profile picture deleted successfully"
+}
+```
+
+**Error Response (404):**
+
+```json
+{
+    "success": false,
+    "message": "No profile picture to delete"
+}
+```
+
+---
+
 ## Blog Management API
 
 Base Path: `/api/blog`
@@ -533,6 +724,56 @@ GET /api/blog/posts?page=2
 
 ## Example Usage
 
+### Profile Management Examples
+
+#### Get Current Profile
+
+```bash
+curl -X GET "http://project_laravel_miea_portal.test/api/profile" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Accept: application/json"
+```
+
+#### Update Profile
+
+```bash
+curl -X PUT "http://project_laravel_miea_portal.test/api/profile" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Updated",
+    "email": "john.updated@example.com"
+  }'
+```
+
+#### Change Password
+
+```bash
+curl -X POST "http://project_laravel_miea_portal.test/api/profile/password" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "current_password": "oldpassword123",
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+  }'
+```
+
+#### Upload Profile Picture
+
+```bash
+curl -X POST "http://project_laravel_miea_portal.test/api/profile/avatar" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -F "avatar=@/path/to/your/profile-picture.jpg"
+```
+
+#### Delete Profile Picture
+
+```bash
+curl -X DELETE "http://project_laravel_miea_portal.test/api/profile/avatar" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+```
+
 ### Complete Authentication Flow
 
 #### 1. Register
@@ -629,6 +870,14 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `POST /api/auth/logout` - Logout user (protected)
 -   `GET /api/auth/me` - Get current user (protected)
 
+### Profile Management (5 endpoints)
+
+-   `GET /api/profile` - Get current user's profile (protected)
+-   `PUT /api/profile` - Update profile information (protected)
+-   `POST /api/profile/password` - Change password (protected)
+-   `POST /api/profile/avatar` - Upload profile picture (protected)
+-   `DELETE /api/profile/avatar` - Delete profile picture (protected)
+
 ### Blog Posts (11 endpoints)
 
 -   `GET /api/blog/posts` - List all posts
@@ -652,7 +901,7 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `PUT /api/blog/categories/{id}` - Update category (protected)
 -   `DELETE /api/blog/categories/{id}` - Delete category (protected)
 
-**Total: 21 API endpoints**
+**Total: 26 API endpoints**
 
 ---
 
