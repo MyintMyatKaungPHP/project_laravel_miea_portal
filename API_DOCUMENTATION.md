@@ -606,7 +606,7 @@ All Site Settings endpoints are **public** (no authentication required) for fron
 
 ### Get Basic Information
 
-Get basic site information including logos, name, description, and favicon.
+Get basic site information including logos, name, description, favicon, and maintenance settings.
 
 ```http
 GET /api/site-settings/basic-info
@@ -622,7 +622,9 @@ GET /api/site-settings/basic-info
         "site_description": "Myanmar International Education Academy",
         "site_logo_light": "http://project_laravel_miea_portal.test/storage/site/logos/logo-light.png",
         "site_logo_dark": "http://project_laravel_miea_portal.test/storage/site/logos/logo-dark.png",
-        "site_favicon": "http://project_laravel_miea_portal.test/storage/site/favicon.ico"
+        "site_favicon": "http://project_laravel_miea_portal.test/storage/site/favicon.ico",
+        "maintenance_mode": false,
+        "maintenance_message": null
     }
 }
 ```
@@ -641,10 +643,10 @@ GET /api/site-settings/contact-info
 {
     "success": true,
     "data": {
-        "contact_email": "info@miea.edu.mm",
-        "contact_phone": "+95 9 123 456 789",
-        "contact_phone_2": "+95 9 987 654 321",
-        "contact_address": "Yangon, Myanmar"
+        "email": "info@miea.edu.mm",
+        "phone_1": "+95 9 123 456 789",
+        "phone_2": "+95 9 987 654 321",
+        "address": "Yangon, Myanmar"
     }
 }
 ```
@@ -663,19 +665,19 @@ GET /api/site-settings/social-media
 {
     "success": true,
     "data": {
-        "facebook_url": "https://facebook.com/miea",
-        "instagram_url": "https://instagram.com/miea",
-        "linkedin_url": "https://linkedin.com/company/miea",
-        "youtube_url": "https://youtube.com/@miea",
-        "telegram_url": "https://t.me/miea",
-        "tiktok_url": "https://tiktok.com/@miea"
+        "facebook": "https://facebook.com/miea",
+        "instagram": "https://instagram.com/miea",
+        "linkedin": "https://linkedin.com/company/miea",
+        "youtube": "https://youtube.com/@miea",
+        "telegram": "https://t.me/miea",
+        "tiktok": "https://tiktok.com/@miea"
     }
 }
 ```
 
 ### Get Footer Information
 
-Get footer content and logo.
+Get footer content, description, and logo.
 
 ```http
 GET /api/site-settings/footer-info
@@ -687,15 +689,16 @@ GET /api/site-settings/footer-info
 {
     "success": true,
     "data": {
-        "footer_text": "© 2025 MIEA. All rights reserved.",
-        "footer_logo": "http://project_laravel_miea_portal.test/storage/site/footer-logo.png"
+        "copyright_text": "© 2025 MIEA. All rights reserved.",
+        "description": "Leading international education provider in Myanmar",
+        "logo": "http://project_laravel_miea_portal.test/storage/site/footer-logo.png"
     }
 }
 ```
 
 ### Get SEO Settings
 
-Get SEO meta information.
+Get SEO meta information and analytics ID.
 
 ```http
 GET /api/site-settings/seo-settings
@@ -707,19 +710,19 @@ GET /api/site-settings/seo-settings
 {
     "success": true,
     "data": {
-        "meta_title": "MIEA - Myanmar International Education Academy",
         "meta_description": "Leading international education provider in Myanmar",
-        "meta_keywords": "education, Myanmar, international, academy"
+        "meta_keywords": "education, Myanmar, international, academy",
+        "google_analytics_id": "GA-XXXX-XXXX"
     }
 }
 ```
 
 ### Get Homepage Settings
 
-Get complete homepage configuration including hero, services, about, achievements, testimonials, video, and partners.
+Get homepage contract settings.
 
 ```http
-GET /api/site-settings/homepage-settings
+GET /api/site-settings/homepage
 ```
 
 **Response (200):**
@@ -729,67 +732,110 @@ GET /api/site-settings/homepage-settings
     "success": true,
     "data": {
         "page_under_contract": false,
-        "under_contract_message": null,
-        "hero": {
-            "miea_school_name": "Myanmar International Education Academy",
-            "typewriter_texts": [
-                "Excellence in Education",
-                "Global Standards",
-                "Future Leaders"
-            ],
-            "intro_text": "Welcome to MIEA",
-            "hero_images": [
-                "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
-                "http://project_laravel_miea_portal.test/storage/hero/image2.jpg"
-            ],
-            "hero_button_text": "Learn More",
-            "hero_button_link": "/about"
-        },
-        "services": [
-            {
-                "name": "Quality Education",
-                "description": "World-class education standards",
-                "image": "http://project_laravel_miea_portal.test/storage/services/service1.jpg"
-            }
+        "under_contract_message": null
+    }
+}
+```
+
+### Get Hero Section Data
+
+Get hero section information including school name, typewriter texts, and images.
+
+```http
+GET /api/site-settings/hero-section
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "school_name": "Myanmar International Education Academy",
+        "typewriter_texts": [
+            "Excellence in Education",
+            "Global Standards",
+            "Future Leaders"
         ],
-        "about": {
-            "about_title": "About MIEA",
-            "about_content": "We are committed to excellence...",
-            "about_image": "http://project_laravel_miea_portal.test/storage/about/about.jpg",
-            "mission": "To provide quality education",
-            "vision": "To be the leading educational institution"
-        },
-        "achievements": {
-            "graduated_students": 5000,
-            "qualified_teachers": 150,
-            "student_teacher_ratio": "15:1",
-            "courses_offered": 50
-        },
-        "testimonials": [
-            {
-                "name": "John Doe",
-                "role": "Alumni",
-                "content": "Great experience at MIEA",
-                "image": "http://project_laravel_miea_portal.test/storage/testimonials/john.jpg"
-            }
+        "intro_text": "Welcome to MIEA",
+        "hero_images": [
+            "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
+            "http://project_laravel_miea_portal.test/storage/hero/image2.jpg"
         ],
-        "intro_video": {
-            "intro_video_title": "Discover MIEA",
-            "intro_video_url": "https://youtube.com/watch?v=..."
-        },
-        "partners": [
-            {
-                "name": "Partner University",
-                "image": "http://project_laravel_miea_portal.test/storage/partners/partner1.jpg"
-            }
-        ]
+        "button_text": "Learn More",
+        "button_link": "/about"
+    }
+}
+```
+
+### Get About Section Data
+
+Get about section information including title, content, image, mission, and vision.
+
+```http
+GET /api/site-settings/about-section
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "title": "About MIEA",
+        "content": "We are committed to excellence in education...",
+        "image": "http://project_laravel_miea_portal.test/storage/about/about.jpg",
+        "mission": "To provide quality education with global standards",
+        "vision": "To be the leading educational institution in Myanmar"
+    }
+}
+```
+
+### Get Achievement Statistics
+
+Get achievement statistics and numbers.
+
+```http
+GET /api/site-settings/achievements
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "graduated_students": 5000,
+        "qualified_teachers": 150,
+        "student_teacher_ratio": "15:1",
+        "courses_offered": 50
+    }
+}
+```
+
+### Get Intro Video Information
+
+Get intro video title and URL.
+
+```http
+GET /api/site-settings/intro-video
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "title": "Discover MIEA",
+        "video_url": "https://youtube.com/watch?v=..."
     }
 }
 ```
 
 ### Get Organizational Structure Page Data
 
-Get leadership cards and organizational structure images.
+Get leadership members and organizational structure images.
 
 ```http
 GET /api/site-settings/organizational-structure-page
@@ -801,28 +847,30 @@ GET /api/site-settings/organizational-structure-page
 {
     "success": true,
     "data": {
-        "leadership_cards": [
+        "org_structure": {
+            "light_image": "http://project_laravel_miea_portal.test/storage/org/structure-light.png",
+            "dark_image": "http://project_laravel_miea_portal.test/storage/org/structure-dark.png"
+        },
+        "leadership": [
             {
+                "id": 1,
                 "name": "Dr. John Smith",
                 "role": "Principal",
                 "image": "http://project_laravel_miea_portal.test/storage/leadership/john.jpg",
-                "color_code": "#3B82F6"
+                "color_code": "#3B82F6",
+                "order": 1
             }
-        ],
-        "org_structure_images": {
-            "light": "http://project_laravel_miea_portal.test/storage/org/structure-light.png",
-            "dark": "http://project_laravel_miea_portal.test/storage/org/structure-dark.png"
-        }
+        ]
     }
 }
 ```
 
-### Get All Settings
+### Get About Page Data
 
-Get all site settings in one request.
+Get about page data (same structure as organizational structure page).
 
 ```http
-GET /api/site-settings
+GET /api/site-settings/about-page
 ```
 
 **Response (200):**
@@ -831,13 +879,107 @@ GET /api/site-settings
 {
     "success": true,
     "data": {
-        "basic_info": {...},
-        "contact_info": {...},
-        "social_media": {...},
-        "footer_info": {...},
-        "seo_settings": {...},
-        "homepage_settings": {...},
-        "organizational_structure": {...}
+        "org_structure": {
+            "light_image": "http://project_laravel_miea_portal.test/storage/org/structure-light.png",
+            "dark_image": "http://project_laravel_miea_portal.test/storage/org/structure-dark.png"
+        },
+        "leadership": [
+            {
+                "id": 1,
+                "name": "Dr. John Smith",
+                "role": "Principal",
+                "image": "http://project_laravel_miea_portal.test/storage/leadership/john.jpg",
+                "color_code": "#3B82F6",
+                "order": 1
+            }
+        ]
+    }
+}
+```
+
+### Get All Settings
+
+Get all site settings in one comprehensive request.
+
+```http
+GET /api/site-settings/all
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "basic_info": {
+            "site_name": "MIEA Portal",
+            "site_description": "Myanmar International Education Academy",
+            "site_logo_light": "http://project_laravel_miea_portal.test/storage/site/logos/logo-light.png",
+            "site_logo_dark": "http://project_laravel_miea_portal.test/storage/site/logos/logo-dark.png",
+            "site_favicon": "http://project_laravel_miea_portal.test/storage/site/favicon.ico",
+            "maintenance_mode": false,
+            "maintenance_message": null
+        },
+        "contact_info": {
+            "email": "info@miea.edu.mm",
+            "phone_1": "+95 9 123 456 789",
+            "phone_2": "+95 9 987 654 321",
+            "address": "Yangon, Myanmar"
+        },
+        "social_media": {
+            "facebook": "https://facebook.com/miea",
+            "instagram": "https://instagram.com/miea",
+            "linkedin": "https://linkedin.com/company/miea",
+            "youtube": "https://youtube.com/@miea",
+            "telegram": "https://t.me/miea",
+            "tiktok": "https://tiktok.com/@miea"
+        },
+        "footer": {
+            "copyright_text": "© 2025 MIEA. All rights reserved.",
+            "description": "Leading international education provider in Myanmar",
+            "logo": "http://project_laravel_miea_portal.test/storage/site/footer-logo.png"
+        },
+        "seo": {
+            "meta_description": "Leading international education provider in Myanmar",
+            "meta_keywords": "education, Myanmar, international, academy",
+            "google_analytics_id": "GA-XXXX-XXXX"
+        },
+        "homepage": {
+            "page_under_contract": false,
+            "under_contract_message": null,
+            "hero_section": {
+                "school_name": "Myanmar International Education Academy",
+                "typewriter_texts": [
+                    "Excellence in Education",
+                    "Global Standards",
+                    "Future Leaders"
+                ],
+                "intro_text": "Welcome to MIEA",
+                "hero_images": [
+                    "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
+                    "http://project_laravel_miea_portal.test/storage/hero/image2.jpg"
+                ],
+                "button_text": "Learn More",
+                "button_link": "/about"
+            },
+            "about_section": {
+                "title": "About MIEA",
+                "content": "We are committed to excellence in education...",
+                "image": "http://project_laravel_miea_portal.test/storage/about/about.jpg",
+                "mission": "To provide quality education with global standards",
+                "vision": "To be the leading educational institution in Myanmar"
+            },
+            "achievements": {
+                "graduated_students": 5000,
+                "qualified_teachers": 150,
+                "student_teacher_ratio": "15:1",
+                "courses_offered": 50
+            },
+            "intro_video": {
+                "title": "Discover MIEA",
+                "video_url": "https://youtube.com/watch?v=..."
+            }
+        }
     }
 }
 ```
@@ -1718,16 +1860,21 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `POST /api/users/{id}/verify` - Verify user email (protected)
 -   `POST /api/users/{id}/unverify` - Unverify user email (protected)
 
-### Site Settings (8 endpoints)
+### Site Settings (13 endpoints)
 
--   `GET /api/site-settings` - Get all settings
 -   `GET /api/site-settings/basic-info` - Get basic information
 -   `GET /api/site-settings/contact-info` - Get contact information
 -   `GET /api/site-settings/social-media` - Get social media links
 -   `GET /api/site-settings/footer-info` - Get footer information
 -   `GET /api/site-settings/seo-settings` - Get SEO settings
--   `GET /api/site-settings/homepage-settings` - Get homepage settings
+-   `GET /api/site-settings/homepage` - Get homepage settings
+-   `GET /api/site-settings/hero-section` - Get hero section data
+-   `GET /api/site-settings/about-section` - Get about section data
+-   `GET /api/site-settings/achievements` - Get achievement statistics
+-   `GET /api/site-settings/intro-video` - Get intro video information
 -   `GET /api/site-settings/organizational-structure-page` - Get organizational structure page data
+-   `GET /api/site-settings/about-page` - Get about page data
+-   `GET /api/site-settings/all` - Get all settings
 
 ### Services (2 endpoints)
 
@@ -1783,7 +1930,7 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `PUT /api/blog/categories/{id}` - Update category (protected)
 -   `DELETE /api/blog/categories/{id}` - Delete category (protected)
 
-**Total: 55 API endpoints**
+**Total: 60 API endpoints**
 
 ---
 
