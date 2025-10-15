@@ -598,6 +598,516 @@ Authorization: Bearer {token}
 
 ---
 
+## Site Settings API
+
+Base Path: `/api/site-settings`
+
+All Site Settings endpoints are **public** (no authentication required) for frontend consumption.
+
+### Get Basic Information
+
+Get basic site information including logos, name, description, and favicon.
+
+```http
+GET /api/site-settings/basic-info
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "site_name": "MIEA Portal",
+        "site_description": "Myanmar International Education Academy",
+        "site_logo_light": "http://project_laravel_miea_portal.test/storage/site/logos/logo-light.png",
+        "site_logo_dark": "http://project_laravel_miea_portal.test/storage/site/logos/logo-dark.png",
+        "site_favicon": "http://project_laravel_miea_portal.test/storage/site/favicon.ico"
+    }
+}
+```
+
+### Get Contact Information
+
+Get contact details including email, phones, and address.
+
+```http
+GET /api/site-settings/contact-info
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "contact_email": "info@miea.edu.mm",
+        "contact_phone": "+95 9 123 456 789",
+        "contact_phone_2": "+95 9 987 654 321",
+        "contact_address": "Yangon, Myanmar"
+    }
+}
+```
+
+### Get Social Media Links
+
+Get all social media URLs.
+
+```http
+GET /api/site-settings/social-media
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "facebook_url": "https://facebook.com/miea",
+        "instagram_url": "https://instagram.com/miea",
+        "linkedin_url": "https://linkedin.com/company/miea",
+        "youtube_url": "https://youtube.com/@miea",
+        "telegram_url": "https://t.me/miea",
+        "tiktok_url": "https://tiktok.com/@miea"
+    }
+}
+```
+
+### Get Footer Information
+
+Get footer content and logo.
+
+```http
+GET /api/site-settings/footer-info
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "footer_text": "© 2025 MIEA. All rights reserved.",
+        "footer_logo": "http://project_laravel_miea_portal.test/storage/site/footer-logo.png"
+    }
+}
+```
+
+### Get SEO Settings
+
+Get SEO meta information.
+
+```http
+GET /api/site-settings/seo-settings
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "meta_title": "MIEA - Myanmar International Education Academy",
+        "meta_description": "Leading international education provider in Myanmar",
+        "meta_keywords": "education, Myanmar, international, academy"
+    }
+}
+```
+
+### Get Homepage Settings
+
+Get complete homepage configuration including hero, services, about, achievements, testimonials, video, and partners.
+
+```http
+GET /api/site-settings/homepage-settings
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "page_under_contract": false,
+        "under_contract_message": null,
+        "hero": {
+            "miea_school_name": "Myanmar International Education Academy",
+            "typewriter_texts": [
+                "Excellence in Education",
+                "Global Standards",
+                "Future Leaders"
+            ],
+            "intro_text": "Welcome to MIEA",
+            "hero_images": [
+                "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
+                "http://project_laravel_miea_portal.test/storage/hero/image2.jpg"
+            ],
+            "hero_button_text": "Learn More",
+            "hero_button_link": "/about"
+        },
+        "services": [
+            {
+                "name": "Quality Education",
+                "description": "World-class education standards",
+                "image": "http://project_laravel_miea_portal.test/storage/services/service1.jpg"
+            }
+        ],
+        "about": {
+            "about_title": "About MIEA",
+            "about_content": "We are committed to excellence...",
+            "about_image": "http://project_laravel_miea_portal.test/storage/about/about.jpg",
+            "mission": "To provide quality education",
+            "vision": "To be the leading educational institution"
+        },
+        "achievements": {
+            "graduated_students": 5000,
+            "qualified_teachers": 150,
+            "student_teacher_ratio": "15:1",
+            "courses_offered": 50
+        },
+        "testimonials": [
+            {
+                "name": "John Doe",
+                "role": "Alumni",
+                "content": "Great experience at MIEA",
+                "image": "http://project_laravel_miea_portal.test/storage/testimonials/john.jpg"
+            }
+        ],
+        "intro_video": {
+            "intro_video_title": "Discover MIEA",
+            "intro_video_url": "https://youtube.com/watch?v=..."
+        },
+        "partners": [
+            {
+                "name": "Partner University",
+                "image": "http://project_laravel_miea_portal.test/storage/partners/partner1.jpg"
+            }
+        ]
+    }
+}
+```
+
+### Get Organizational Structure Page Data
+
+Get leadership cards and organizational structure images.
+
+```http
+GET /api/site-settings/organizational-structure-page
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "leadership_cards": [
+            {
+                "name": "Dr. John Smith",
+                "role": "Principal",
+                "image": "http://project_laravel_miea_portal.test/storage/leadership/john.jpg",
+                "color_code": "#3B82F6"
+            }
+        ],
+        "org_structure_images": {
+            "light": "http://project_laravel_miea_portal.test/storage/org/structure-light.png",
+            "dark": "http://project_laravel_miea_portal.test/storage/org/structure-dark.png"
+        }
+    }
+}
+```
+
+### Get All Settings
+
+Get all site settings in one request.
+
+```http
+GET /api/site-settings
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "basic_info": {...},
+        "contact_info": {...},
+        "social_media": {...},
+        "footer_info": {...},
+        "seo_settings": {...},
+        "homepage_settings": {...},
+        "organizational_structure": {...}
+    }
+}
+```
+
+---
+
+## Services API
+
+Base Path: `/api/services`
+
+### List All Services
+
+Get all active services.
+
+```http
+GET /api/services
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "Quality Education",
+            "description": "World-class education standards",
+            "image_url": "http://project_laravel_miea_portal.test/storage/services/service1.jpg"
+        }
+    ]
+}
+```
+
+### Get Single Service
+
+```http
+GET /api/services/{id}
+```
+
+---
+
+## Testimonials API
+
+Base Path: `/api/testimonials`
+
+### List All Testimonials
+
+Get all active testimonials.
+
+```http
+GET /api/testimonials
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "role": "Alumni",
+            "content": "Great experience at MIEA",
+            "image_url": "http://project_laravel_miea_portal.test/storage/testimonials/john.jpg"
+        }
+    ]
+}
+```
+
+### Get Single Testimonial
+
+```http
+GET /api/testimonials/{id}
+```
+
+---
+
+## Partners API
+
+Base Path: `/api/partners`
+
+### List All Partners
+
+Get all active partners.
+
+```http
+GET /api/partners
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "Partner University",
+            "image_url": "http://project_laravel_miea_portal.test/storage/partners/partner1.jpg"
+        }
+    ]
+}
+```
+
+### Get Single Partner
+
+```http
+GET /api/partners/{id}
+```
+
+---
+
+## Leadership API
+
+Base Path: `/api/leadership`
+
+### List All Leadership Members
+
+Get all active leadership members.
+
+```http
+GET /api/leadership
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "Dr. John Smith",
+            "role": "Principal",
+            "image_url": "http://project_laravel_miea_portal.test/storage/leadership/john.jpg",
+            "color_code": "#3B82F6"
+        }
+    ]
+}
+```
+
+### Get Single Leadership Member
+
+```http
+GET /api/leadership/{id}
+```
+
+---
+
+## School Achievements API
+
+Base Path: `/api/school-achievements`
+
+### List All School Achievements
+
+Get all active school achievements by year.
+
+```http
+GET /api/school-achievements
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "ac_year": "2024-2025",
+            "achievement_list": [
+                "National Science Fair Winner",
+                "Best School Award",
+                "100% Pass Rate"
+            ]
+        }
+    ]
+}
+```
+
+### Get Single School Achievement
+
+```http
+GET /api/school-achievements/{id}
+```
+
+---
+
+## Programme Images API
+
+Base Path: `/api/programme-images`
+
+### List All Programme Images
+
+Get all programme images.
+
+```http
+GET /api/programme-images
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "programme_name": "A Level Programme",
+            "images": [
+                "http://project_laravel_miea_portal.test/storage/programmes/images/alevel1.jpg",
+                "http://project_laravel_miea_portal.test/storage/programmes/images/alevel2.jpg"
+            ]
+        },
+        {
+            "id": 2,
+            "programme_name": "Upper Secondary Programme",
+            "images": [
+                "http://project_laravel_miea_portal.test/storage/programmes/images/upper1.jpg"
+            ]
+        },
+        {
+            "id": 3,
+            "programme_name": "Lower Secondary Programme",
+            "images": [
+                "http://project_laravel_miea_portal.test/storage/programmes/images/lower1.jpg"
+            ]
+        }
+    ]
+}
+```
+
+### Get Programme Images by Programme Name
+
+```http
+GET /api/programme-images/programme/{programmeName}
+```
+
+**Example:**
+
+```http
+GET /api/programme-images/programme/A Level Programme
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "programme_name": "A Level Programme",
+        "images": [
+            "http://project_laravel_miea_portal.test/storage/programmes/images/alevel1.jpg",
+            "http://project_laravel_miea_portal.test/storage/programmes/images/alevel2.jpg"
+        ]
+    }
+}
+```
+
+### Get Single Programme Image
+
+```http
+GET /api/programme-images/{id}
+```
+
+---
+
 ## Blog Management API
 
 Base Path: `/api/blog`
@@ -1208,6 +1718,48 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `POST /api/users/{id}/verify` - Verify user email (protected)
 -   `POST /api/users/{id}/unverify` - Unverify user email (protected)
 
+### Site Settings (8 endpoints)
+
+-   `GET /api/site-settings` - Get all settings
+-   `GET /api/site-settings/basic-info` - Get basic information
+-   `GET /api/site-settings/contact-info` - Get contact information
+-   `GET /api/site-settings/social-media` - Get social media links
+-   `GET /api/site-settings/footer-info` - Get footer information
+-   `GET /api/site-settings/seo-settings` - Get SEO settings
+-   `GET /api/site-settings/homepage-settings` - Get homepage settings
+-   `GET /api/site-settings/organizational-structure-page` - Get organizational structure page data
+
+### Services (2 endpoints)
+
+-   `GET /api/services` - List all services
+-   `GET /api/services/{id}` - Get single service
+
+### Testimonials (2 endpoints)
+
+-   `GET /api/testimonials` - List all testimonials
+-   `GET /api/testimonials/{id}` - Get single testimonial
+
+### Partners (2 endpoints)
+
+-   `GET /api/partners` - List all partners
+-   `GET /api/partners/{id}` - Get single partner
+
+### Leadership (2 endpoints)
+
+-   `GET /api/leadership` - List all leadership members
+-   `GET /api/leadership/{id}` - Get single leadership member
+
+### School Achievements (2 endpoints)
+
+-   `GET /api/school-achievements` - List all school achievements
+-   `GET /api/school-achievements/{id}` - Get single school achievement
+
+### Programme Images (3 endpoints)
+
+-   `GET /api/programme-images` - List all programme images
+-   `GET /api/programme-images/programme/{programmeName}` - Get programme images by name
+-   `GET /api/programme-images/{id}` - Get single programme image
+
 ### Blog Posts (11 endpoints)
 
 -   `GET /api/blog/posts` - List all posts
@@ -1231,7 +1783,7 @@ curl -X POST "http://project_laravel_miea_portal.test/api/blog/categories" \
 -   `PUT /api/blog/categories/{id}` - Update category (protected)
 -   `DELETE /api/blog/categories/{id}` - Delete category (protected)
 
-**Total: 34 API endpoints**
+**Total: 55 API endpoints**
 
 ---
 
