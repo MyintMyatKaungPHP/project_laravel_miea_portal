@@ -2,12 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\Profile\ProfileResource;
+use App\Filament\Resources\SiteSettings\SiteSettingResource;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Filament\Http\Middleware\Authenticate;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
-use App\Filament\Resources\Profile\ProfileResource;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationGroup;
@@ -50,6 +51,9 @@ class PortalPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+            ->resources([
+                SiteSettingResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
@@ -69,7 +73,7 @@ class PortalPanelProvider extends PanelProvider
             ])
             ->userMenuItems([
                 MenuItem::make()
-                    ->label(fn() => auth()->user()->name)
+                    ->label(__('My profile'))
                     ->url(fn() => ProfileResource::getUrl('edit'))
                     ->icon('heroicon-o-user-circle'),
             ])
