@@ -213,20 +213,20 @@ class SiteSettingForm
                         ->label('Home Page')
                         ->icon('heroicon-o-home')
                         ->schema([
-                            // Page Under Contract Section
-                            Section::make('Page Under Contract')
-                                ->description('Show under construction message')
+                            // Page Under Maintenance Section (labels only; keeps DB fields)
+                            Section::make('Page Under Maintenance')
+                                ->description('Show under maintenance message on homepage')
                                 ->collapsible()
                                 ->collapsed()
                                 ->schema([
                                     Toggle::make('page_under_contract')
-                                        ->label('Enable Page Under Contract')
-                                        ->helperText('Show under construction message on homepage'),
+                                        ->label('Enable Page Under Maintenance')
+                                        ->helperText('Show under maintenance message on homepage'),
 
                                     Textarea::make('under_contract_message')
-                                        ->label('Under Contract Message')
+                                        ->label('Under Maintenance Message')
                                         ->rows(3)
-                                        ->placeholder('This page is currently under construction. Please check back soon.')
+                                        ->placeholder('This page is currently under maintenance. Please check back soon.')
                                         ->columnSpanFull(),
                                 ])->columns(2),
 
@@ -254,13 +254,13 @@ class SiteSettingForm
                                         ->columnSpanFull(),
 
                                     FileUpload::make('hero_images')
-                                        ->label('Hero Images')
+                                        ->label('Hero Image')
                                         ->image()
                                         ->imageEditor()
-                                        ->multiple()
+                                        ->disk('public')
                                         ->directory('site/hero')
                                         ->maxSize(3072)
-                                        ->helperText('Max 3MB per image')
+                                        ->helperText('Max 3MB')
                                         ->columnSpanFull(),
 
                                     TextInput::make('hero_button_text')

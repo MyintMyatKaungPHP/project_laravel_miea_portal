@@ -719,7 +719,7 @@ GET /api/site-settings/seo-settings
 
 ### Get Homepage Settings
 
-Get homepage contract settings.
+Get homepage maintenance settings.
 
 ```http
 GET /api/site-settings/homepage
@@ -731,15 +731,15 @@ GET /api/site-settings/homepage
 {
     "success": true,
     "data": {
-        "page_under_contract": false,
-        "under_contract_message": null
+        "page_under_maintenance": false,
+        "under_maintenance_message": null
     }
 }
 ```
 
 ### Get Hero Section Data
 
-Get hero section information including school name, typewriter texts, and images.
+Get hero section information including school name, typewriter texts, and single hero image.
 
 ```http
 GET /api/site-settings/hero-section
@@ -758,10 +758,7 @@ GET /api/site-settings/hero-section
             "Future Leaders"
         ],
         "intro_text": "Welcome to MIEA",
-        "hero_images": [
-            "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
-            "http://project_laravel_miea_portal.test/storage/hero/image2.jpg"
-        ],
+        "hero_image": "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
         "button_text": "Learn More",
         "button_link": "/about"
     }
@@ -945,8 +942,8 @@ GET /api/site-settings/all
             "google_analytics_id": "GA-XXXX-XXXX"
         },
         "homepage": {
-            "page_under_contract": false,
-            "under_contract_message": null,
+            "page_under_maintenance": false,
+            "under_maintenance_message": null,
             "hero_section": {
                 "school_name": "Myanmar International Education Academy",
                 "typewriter_texts": [
@@ -955,10 +952,7 @@ GET /api/site-settings/all
                     "Future Leaders"
                 ],
                 "intro_text": "Welcome to MIEA",
-                "hero_images": [
-                    "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
-                    "http://project_laravel_miea_portal.test/storage/hero/image2.jpg"
-                ],
+                "hero_image": "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
                 "button_text": "Learn More",
                 "button_link": "/about"
             },

@@ -112,8 +112,9 @@ class SiteSettingController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'page_under_contract' => $settings->page_under_contract,
-                'under_contract_message' => $settings->under_contract_message,
+                // Keep DB fields but expose as "under maintenance" terminology
+                'page_under_maintenance' => $settings->page_under_maintenance,
+                'under_maintenance_message' => $settings->under_maintenance_message,
             ]
         ]);
     }
@@ -125,13 +126,20 @@ class SiteSettingController extends Controller
     {
         $settings = SiteSetting::current();
 
+        $heroImage = null;
+        if (!empty($settings->hero_images_urls)) {
+            $heroImage = is_array($settings->hero_images_urls)
+                ? ($settings->hero_images_urls[0] ?? null)
+                : $settings->hero_images_urls;
+        }
+
         return response()->json([
             'success' => true,
             'data' => [
                 'school_name' => $settings->miea_school_name,
                 'typewriter_texts' => $settings->typewriter_texts,
                 'intro_text' => $settings->intro_text,
-                'hero_images' => $settings->hero_images_urls,
+                'hero_image' => $heroImage,
                 'button_text' => $settings->hero_button_text,
                 'button_link' => $settings->hero_button_link,
             ]
@@ -317,13 +325,17 @@ class SiteSettingController extends Controller
 
                 // Homepage
                 'homepage' => [
-                    'page_under_contract' => $settings->page_under_contract,
-                    'under_contract_message' => $settings->under_contract_message,
+                    'page_under_maintenance' => $settings->page_under_maintenance,
+                    'under_maintenance_message' => $settings->under_maintenance_message,
                     'hero_section' => [
                         'school_name' => $settings->miea_school_name,
                         'typewriter_texts' => $settings->typewriter_texts,
                         'intro_text' => $settings->intro_text,
-                        'hero_images' => $settings->hero_images_urls,
+                        'hero_image' => (
+                            !empty($settings->hero_images_urls)
+                            ? (is_array($settings->hero_images_urls) ? ($settings->hero_images_urls[0] ?? null) : $settings->hero_images_urls)
+                            : null
+                        ),
                         'button_text' => $settings->hero_button_text,
                         'button_link' => $settings->hero_button_link,
                     ],

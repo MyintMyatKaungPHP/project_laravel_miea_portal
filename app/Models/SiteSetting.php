@@ -154,13 +154,19 @@ class SiteSetting extends Model
      */
     public function getHeroImagesUrlsAttribute(): array
     {
-        if (!$this->hero_images) {
+        $images = $this->hero_images;
+        if (empty($images)) {
             return [];
         }
-
+        if (is_string($images)) {
+            $images = [$images];
+        }
+        if (!is_array($images)) {
+            return [];
+        }
         return array_map(function ($image) {
             return Storage::url($image);
-        }, $this->hero_images);
+        }, $images);
     }
 
     /**

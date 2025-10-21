@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SiteSettingController;
+use App\Http\Controllers\Api\HeroSectionController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\PartnerController;
@@ -103,7 +104,7 @@ Route::prefix('site-settings')->group(function () {
 
     // Homepage Settings
     Route::get('homepage', [SiteSettingController::class, 'getHomepageSettings']);
-    Route::get('hero-section', [SiteSettingController::class, 'getHeroSection']);
+    Route::get('hero-section', [HeroSectionController::class, 'getHeroSection']);
     Route::get('about-section', [SiteSettingController::class, 'getAboutSection']);
     Route::get('achievements', [SiteSettingController::class, 'getAchievements']);
     Route::get('intro-video', [SiteSettingController::class, 'getIntroVideo']);
