@@ -122,6 +122,7 @@ class ManageSiteSetting extends EditRecord
                     'image' => is_array($serviceCardData['image']) ? $serviceCardData['image'][0] : $serviceCardData['image'],
                     'overlay_color' => $serviceCardData['overlay_color'] ?? null,
                     'link' => $serviceCardData['link'] ?? null,
+                    'tag_name' => $serviceCardData['tag_name'] ?? null, // Added tag_name field
                     'active' => $serviceCardData['active'] ?? true,
                 ]);
             }
@@ -230,6 +231,7 @@ class ManageSiteSetting extends EditRecord
                     'image' => $serviceCard->image,
                     'overlay_color' => $serviceCard->overlay_color,
                     'link' => $serviceCard->link,
+                    'tag_name' => $serviceCard->tag_name, // Added tag_name field
                     'active' => $serviceCard->active,
                 ];
             })->toArray(),

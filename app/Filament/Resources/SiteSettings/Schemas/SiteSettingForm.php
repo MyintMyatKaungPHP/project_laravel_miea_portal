@@ -353,7 +353,7 @@ class SiteSettingForm
                                                 ->helperText('Link to navigate when card is clicked'),
 
                                             TextInput::make('tag_name')
-                                                ->label('Tag ID')
+                                                ->label('Tag Name')
                                                 ->maxLength(255)
                                                 ->placeholder('1')
                                                 ->helperText('Tag name for categorization')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
+use App\Models\ServiceCard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -362,5 +363,61 @@ class SiteSettingController extends Controller
                 ],
             ]
         ]);
+    }
+
+    /**
+     * Get service cards data
+     */
+    public function getServiceCards(): JsonResponse
+    {
+        try {
+            $serviceCards = ServiceCard::where('active', true)
+                ->orderBy('id', 'asc')
+                ->get()
+                ->map(function ($card) {
+                    // Derive programmes tab id from tag_name
+                    $tabId = null;
+                    $tag = trim((string) ($card->tag_name ?? ''));
+                    if ($tag !== '') {
+                        if (ctype_digit($tag)) {
+                            $tabId = (int) $tag;
+                        } else {
+                            $normalized = strtolower($tag);
+                            $map = [
+                                'a-level' => 1,
+                                'upper-secondary' => 2,
+                                'lower-secondary' => 3,
+                                'alevel' => 1,
+                                'upper' => 2,
+                                'lower' => 3,
+                            ];
+                            $tabId = $map[$normalized] ?? null;
+                        }
+                    }
+
+                    $computedLink = $tabId ? ('/programmes?tab=' . $tabId) : ($card->link ?? '/programmes');
+
+                    return [
+                        'id' => $card->id,
+                        'title' => $card->title,
+                        'details' => $card->details,
+                        'image' => $card->image_url,
+                        'overlay_color' => $card->overlay_color,
+                        'link' => $computedLink,
+                        'tag_name' => $card->tag_name,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'data' => $serviceCards
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch service cards',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

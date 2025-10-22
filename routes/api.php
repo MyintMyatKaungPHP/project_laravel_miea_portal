@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SiteSettingController;
 use App\Http\Controllers\Api\HeroSectionController;
-use App\Http\Controllers\Api\ServiceCardController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\LeadershipController;
@@ -118,21 +117,11 @@ Route::prefix('site-settings')->group(function () {
 
     // Complete settings
     Route::get('all', [SiteSettingController::class, 'getAllSettings']);
+
+    // Service Cards (from SiteSetting)
+    Route::get('service-cards', [SiteSettingController::class, 'getServiceCards']);
 });
 
-// Service Cards API Routes
-Route::prefix('service-cards')->group(function () {
-    // Public endpoints (for frontend consumption)
-    Route::get('/', [ServiceCardController::class, 'index']);
-    Route::get('/{serviceCard}', [ServiceCardController::class, 'show']);
-
-    // Admin endpoints (commented out - manage via Filament admin panel)
-    // Route::middleware('auth:sanctum')->group(function () {
-    //     Route::post('/', [ServiceCardController::class, 'store']);
-    //     Route::put('/{serviceCard}', [ServiceCardController::class, 'update']);
-    //     Route::delete('/{serviceCard}', [ServiceCardController::class, 'destroy']);
-    // });
-});
 
 // Testimonials API Routes
 Route::prefix('testimonials')->group(function () {
