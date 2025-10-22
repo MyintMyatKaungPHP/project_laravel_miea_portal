@@ -112,7 +112,9 @@ class SiteSettingController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                // Keep DB fields but expose as "under maintenance" terminology
+                // Expose both maintenance_mode and page_under_maintenance for compatibility
+                'maintenance_mode' => $settings->maintenance_mode,
+                'maintenance_message' => $settings->maintenance_message,
                 'page_under_maintenance' => $settings->page_under_maintenance,
                 'under_maintenance_message' => $settings->under_maintenance_message,
             ]
