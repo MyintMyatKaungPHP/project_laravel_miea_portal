@@ -338,6 +338,7 @@ class SiteSettingController extends Controller
                         ),
                         'button_text' => $settings->hero_button_text,
                         'button_link' => $settings->hero_button_link,
+                        'button_show' => $settings->hero_button_show,
                     ],
                     'about_section' => [
                         'title' => $settings->about_title,

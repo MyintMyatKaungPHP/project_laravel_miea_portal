@@ -45,13 +45,6 @@ class SchoolAchievement extends Model
         return $query->where('is_active', true);
     }
 
-    /**
-     * Scope to order by order column.
-     */
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('order');
-    }
 
     /**
      * Get the site setting that owns the achievement.

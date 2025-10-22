@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('programme_name')->unique(); // Advanced Level, Upper Secondary (IGCSE), Lower Secondary (Pre-IGCSE)
             $table->string('image')->nullable(); // Single image for each programme
             $table->boolean('is_active')->default(true);
-            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

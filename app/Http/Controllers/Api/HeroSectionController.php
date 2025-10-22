@@ -39,8 +39,9 @@ class HeroSectionController extends Controller
                     'typewriter_texts' => $settings->typewriter_texts,
                     'intro_text' => $settings->intro_text,
                     'hero_image' => $heroImage,
-                    'button_text' => $settings->button_text,
-                    'button_link' => $settings->button_link,
+                    'button_text' => $settings->hero_button_text,
+                    'button_link' => $settings->hero_button_link,
+                    'button_show' => $settings->hero_button_show,
                 ]
             ]);
         } catch (\Exception $e) {

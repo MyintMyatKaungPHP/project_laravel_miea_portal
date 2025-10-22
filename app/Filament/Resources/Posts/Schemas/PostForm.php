@@ -66,7 +66,7 @@ class PostForm
                                 FileUpload::make('thumbnail')
                                     ->label(__('posts.fields.thumbnail'))
                                     ->disk('public')
-                                    ->directory('thumbnails')
+                                    ->directory('posts/thumbnails')
                                     ->visibility('public')
                                     ->image()
                                     ->maxSize(2048),

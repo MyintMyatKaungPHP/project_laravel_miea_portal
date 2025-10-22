@@ -84,7 +84,6 @@ class PostSeeder extends Seeder
             Post::create([
                 'thumbnail' => $postData['thumbnail'],
                 'title' => $postData['title'],
-                'color' => $postData['color'],
                 'slug' => $postData['slug'],
                 'content' => $postData['content'],
                 'tags' => $postData['tags'],

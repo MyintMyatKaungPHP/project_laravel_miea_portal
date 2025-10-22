@@ -4,7 +4,7 @@ namespace App\Filament\Resources\SiteSettings\Pages;
 
 use App\Filament\Resources\SiteSettings\SiteSettingResource;
 use App\Models\SiteSetting;
-use App\Models\Service;
+use App\Models\ServiceCard;
 use App\Models\Testimonial;
 use App\Models\Partner;
 use App\Models\Leadership;
@@ -66,10 +66,10 @@ class ManageSiteSetting extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // Handle services data
-        if (isset($data['services']) && is_array($data['services'])) {
-            $this->saveServices($data['services']);
-            unset($data['services']); // Remove from main data array
+        // Handle service cards data
+        if (isset($data['service_cards']) && is_array($data['service_cards'])) {
+            $this->saveServiceCards($data['service_cards']);
+            unset($data['service_cards']); // Remove from main data array
         }
 
         // Handle testimonials data
@@ -102,23 +102,27 @@ class ManageSiteSetting extends EditRecord
             unset($data['programme_images']); // Remove from main data array
         }
 
+        // Debug: Log the data being saved
+        \Log::info('SiteSetting save data:', $data);
+
         return $data;
     }
 
-    protected function saveServices(array $services): void
+    protected function saveServiceCards(array $serviceCards): void
     {
-        // Delete existing services
-        Service::truncate();
+        // Delete existing service cards
+        ServiceCard::truncate();
 
-        // Create new services
-        foreach ($services as $serviceData) {
-            if (!empty($serviceData['name']) && !empty($serviceData['description'])) {
-                Service::create([
-                    'name' => $serviceData['name'],
-                    'description' => $serviceData['description'],
-                    'image' => is_array($serviceData['image']) ? $serviceData['image'][0] : $serviceData['image'],
-                    'order' => $serviceData['order'] ?? 0,
-                    'is_active' => $serviceData['is_active'] ?? true,
+        // Create new service cards
+        foreach ($serviceCards as $serviceCardData) {
+            if (!empty($serviceCardData['title']) && !empty($serviceCardData['details'])) {
+                ServiceCard::create([
+                    'title' => $serviceCardData['title'],
+                    'details' => $serviceCardData['details'],
+                    'image' => is_array($serviceCardData['image']) ? $serviceCardData['image'][0] : $serviceCardData['image'],
+                    'overlay_color' => $serviceCardData['overlay_color'] ?? null,
+                    'link' => $serviceCardData['link'] ?? null,
+                    'active' => $serviceCardData['active'] ?? true,
                 ]);
             }
         }
@@ -137,7 +141,6 @@ class ManageSiteSetting extends EditRecord
                     'role' => $testimonialData['role'] ?? '',
                     'content' => $testimonialData['content'],
                     'image' => is_array($testimonialData['image']) ? $testimonialData['image'][0] : $testimonialData['image'],
-                    'order' => $testimonialData['order'] ?? 0,
                     'is_active' => $testimonialData['is_active'] ?? true,
                 ]);
             }
@@ -155,7 +158,6 @@ class ManageSiteSetting extends EditRecord
                 Partner::create([
                     'name' => $partnerData['name'],
                     'image' => is_array($partnerData['image']) ? $partnerData['image'][0] : $partnerData['image'],
-                    'order' => $partnerData['order'] ?? 0,
                     'is_active' => $partnerData['is_active'] ?? true,
                 ]);
             }
@@ -176,7 +178,6 @@ class ManageSiteSetting extends EditRecord
                     'role' => $leadershipData['role'],
                     'image' => is_array($leadershipData['image']) ? $leadershipData['image'][0] : $leadershipData['image'],
                     'color_code' => $leadershipData['color_code'] ?? '#3B82F6',
-                    'order' => $leadershipData['order'] ?? 0,
                     'is_active' => $leadershipData['is_active'] ?? true,
                 ]);
             }
@@ -195,7 +196,6 @@ class ManageSiteSetting extends EditRecord
                     'site_setting_id' => $this->record->id,
                     'ac_year' => $achievementData['ac_year'],
                     'achievement_list' => $achievementData['achievement_list'],
-                    'order' => $achievementData['order'] ?? 0,
                     'is_active' => $achievementData['is_active'] ?? true,
                 ]);
             }
@@ -222,57 +222,54 @@ class ManageSiteSetting extends EditRecord
     protected function fillForm(): void
     {
         $this->form->fill([
-            // Load existing services
-            'services' => Service::ordered()->get()->map(function ($service) {
+            // Load existing service cards
+            'service_cards' => ServiceCard::where('active', true)->orderBy('id', 'asc')->get()->map(function ($serviceCard) {
                 return [
-                    'name' => $service->name,
-                    'description' => $service->description,
-                    'image' => $service->image,
-                    'order' => $service->order,
-                    'is_active' => $service->is_active,
+                    'title' => $serviceCard->title,
+                    'details' => $serviceCard->details,
+                    'image' => $serviceCard->image,
+                    'overlay_color' => $serviceCard->overlay_color,
+                    'link' => $serviceCard->link,
+                    'active' => $serviceCard->active,
                 ];
             })->toArray(),
 
             // Load existing testimonials
-            'testimonials' => Testimonial::ordered()->get()->map(function ($testimonial) {
+            'testimonials' => Testimonial::all()->map(function ($testimonial) {
                 return [
                     'name' => $testimonial->name,
                     'role' => $testimonial->role,
                     'content' => $testimonial->content,
                     'image' => $testimonial->image,
-                    'order' => $testimonial->order,
                     'is_active' => $testimonial->is_active,
                 ];
             })->toArray(),
 
             // Load existing partners
-            'partners' => Partner::ordered()->get()->map(function ($partner) {
+            'partners' => Partner::all()->map(function ($partner) {
                 return [
                     'name' => $partner->name,
                     'image' => $partner->image,
-                    'order' => $partner->order,
                     'is_active' => $partner->is_active,
                 ];
             })->toArray(),
 
             // Load existing leadership
-            'leadership' => Leadership::ordered()->get()->map(function ($leadership) {
+            'leadership' => Leadership::all()->map(function ($leadership) {
                 return [
                     'name' => $leadership->name,
                     'role' => $leadership->role,
                     'image' => $leadership->image,
                     'color_code' => $leadership->color_code,
-                    'order' => $leadership->order,
                     'is_active' => $leadership->is_active,
                 ];
             })->toArray(),
 
             // Load existing school achievements
-            'school_achievements' => SchoolAchievement::ordered()->get()->map(function ($achievement) {
+            'school_achievements' => SchoolAchievement::all()->map(function ($achievement) {
                 return [
                     'ac_year' => $achievement->ac_year,
                     'achievement_list' => $achievement->achievement_list,
-                    'order' => $achievement->order,
                     'is_active' => $achievement->is_active,
                 ];
             })->toArray(),

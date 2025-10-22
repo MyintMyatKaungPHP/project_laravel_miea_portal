@@ -47,5 +47,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             // ApiDocsSeeder::class, // Disabled - using markdown documentation instead
         ]);
+
+        // $this->call(SiteSettingSeeder::class);
     }
 }

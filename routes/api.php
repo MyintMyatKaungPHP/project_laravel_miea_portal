@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SiteSettingController;
 use App\Http\Controllers\Api\HeroSectionController;
-use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\ServiceCardController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\LeadershipController;
@@ -120,17 +120,17 @@ Route::prefix('site-settings')->group(function () {
     Route::get('all', [SiteSettingController::class, 'getAllSettings']);
 });
 
-// Services API Routes
-Route::prefix('services')->group(function () {
+// Service Cards API Routes
+Route::prefix('service-cards')->group(function () {
     // Public endpoints (for frontend consumption)
-    Route::get('/', [ServiceController::class, 'index']);
-    Route::get('/{service}', [ServiceController::class, 'show']);
+    Route::get('/', [ServiceCardController::class, 'index']);
+    Route::get('/{serviceCard}', [ServiceCardController::class, 'show']);
 
     // Admin endpoints (commented out - manage via Filament admin panel)
     // Route::middleware('auth:sanctum')->group(function () {
-    //     Route::post('/', [ServiceController::class, 'store']);
-    //     Route::put('/{service}', [ServiceController::class, 'update']);
-    //     Route::delete('/{service}', [ServiceController::class, 'destroy']);
+    //     Route::post('/', [ServiceCardController::class, 'store']);
+    //     Route::put('/{serviceCard}', [ServiceCardController::class, 'update']);
+    //     Route::delete('/{serviceCard}', [ServiceCardController::class, 'destroy']);
     // });
 });
 

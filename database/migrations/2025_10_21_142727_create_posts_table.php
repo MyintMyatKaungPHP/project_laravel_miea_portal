@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('thumbnail')->nullable();
             $table->string('title');
-            $table->string('color')->nullable();
             $table->string('slug')->unique();
-            $table->text('content');
+            $table->longText('content');
             $table->json('tags')->nullable();
             $table->boolean('published')->default(false);
-            $table->foreignId('user_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });

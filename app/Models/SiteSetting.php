@@ -23,13 +23,13 @@ class SiteSetting extends Model
 
         // Contact Information
         'contact_email',
+        'contact_email_2',
         'contact_phone',
         'contact_phone_2',
         'contact_address',
 
         // Social Media Links
         'facebook_url',
-        'twitter_url',
         'instagram_url',
         'linkedin_url',
         'youtube_url',
@@ -37,13 +37,11 @@ class SiteSetting extends Model
         'tiktok_url',
 
         // Hero Section
-        'hero_title',
-        'hero_subtitle',
-        'hero_image',
         'hero_images',
         'hero_button_text',
         'hero_button_link',
-        'miea_school_name',
+        'hero_button_show',
+        'school_name',
         'typewriter_texts',
         'intro_text',
 
@@ -53,7 +51,6 @@ class SiteSetting extends Model
         'about_image',
         'mission',
         'vision',
-
 
         // Footer
         'footer_text',
@@ -68,8 +65,8 @@ class SiteSetting extends Model
         // Additional Settings
         'maintenance_mode',
         'maintenance_message',
-        'page_under_contract',
-        'under_contract_message',
+        'page_under_maintenance',
+        'under_maintenance_message',
 
         // Achievement Section
         'graduated_students',
@@ -93,7 +90,8 @@ class SiteSetting extends Model
      */
     protected $casts = [
         'maintenance_mode' => 'boolean',
-        'page_under_contract' => 'boolean',
+        'page_under_maintenance' => 'boolean',
+        'hero_button_show' => 'boolean',
         'typewriter_texts' => 'array',
         'hero_images' => 'array',
         'graduated_students' => 'integer',
@@ -229,9 +227,11 @@ class SiteSetting extends Model
 
         if (!$settings) {
             $settings = self::create([
-                'site_name' => 'MIEA Portal',
-                'site_description' => 'Welcome to MIEA Portal',
-                'footer_text' => '© 2025 MIEA Portal. All rights reserved.',
+                'site_name' => 'MIEA School',
+                'site_description' => 'Welcome to MIEA School',
+                'contact_email' => 'info@miea.school',
+                'contact_phone' => '09 9585 94545',
+                'footer_text' => '© 2025 MIEA School. All rights reserved.',
             ]);
         }
 

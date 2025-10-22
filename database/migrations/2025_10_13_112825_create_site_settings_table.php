@@ -15,38 +15,48 @@ return new class extends Migration
             $table->id();
 
             // Basic Site Information
-            $table->string('site_name')->default('MIEA Portal');
+            $table->string('site_name');
             $table->string('site_logo')->nullable();
+            $table->string('site_logo_light')->nullable();
+            $table->string('site_logo_dark')->nullable();
             $table->string('site_favicon')->nullable();
             $table->text('site_description')->nullable();
 
             // Contact Information
-            $table->string('contact_email')->nullable();
-            $table->string('contact_phone')->nullable();
+            $table->string('contact_email');
+            $table->string('contact_email_2')->nullable();
+            $table->string('contact_phone');
+            $table->string('contact_phone_2')->nullable();
             $table->text('contact_address')->nullable();
 
             // Social Media Links
             $table->string('facebook_url')->nullable();
-            $table->string('twitter_url')->nullable();
             $table->string('instagram_url')->nullable();
             $table->string('linkedin_url')->nullable();
             $table->string('youtube_url')->nullable();
+            $table->string('telegram_url')->nullable();
+            $table->string('tiktok_url')->nullable();
 
             // Hero Section
-            $table->string('hero_title')->nullable();
-            $table->text('hero_subtitle')->nullable();
-            $table->string('hero_image')->nullable();
+            $table->string('school_name')->nullable();
+            $table->json('typewriter_texts')->nullable();
+            $table->text('intro_text')->nullable();
+            $table->json('hero_images')->nullable();
             $table->string('hero_button_text')->nullable();
             $table->string('hero_button_link')->nullable();
+            $table->boolean('hero_button_show')->default(true);
 
             // About Section
             $table->string('about_title')->nullable();
             $table->text('about_content')->nullable();
             $table->string('about_image')->nullable();
+            $table->text('mission')->nullable();
+            $table->text('vision')->nullable();
 
             // Footer
             $table->text('footer_text')->nullable();
             $table->text('footer_description')->nullable();
+            $table->string('footer_logo')->nullable();
 
             // SEO
             $table->text('meta_keywords')->nullable();
@@ -56,6 +66,24 @@ return new class extends Migration
             // Additional Settings
             $table->boolean('maintenance_mode')->default(false);
             $table->text('maintenance_message')->nullable();
+
+            // Page Maintenance
+            $table->boolean('page_under_maintenance')->default(false);
+            $table->text('under_maintenance_message')->nullable();
+
+            // Statistics
+            $table->string('graduated_students')->nullable();
+            $table->string('qualified_teachers')->nullable();
+            $table->string('student_teacher_ratio')->nullable();
+            $table->string('courses_offered')->nullable();
+
+            // Video Section
+            $table->string('intro_video_title')->nullable();
+            $table->string('intro_video_url')->nullable();
+
+            // Organization Structure
+            $table->string('org_structure_image_light')->nullable();
+            $table->string('org_structure_image_dark')->nullable();
 
             $table->timestamps();
         });

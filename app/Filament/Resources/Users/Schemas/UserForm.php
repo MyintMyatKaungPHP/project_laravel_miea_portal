@@ -62,7 +62,7 @@ class UserForm
                     ->schema([
                         FileUpload::make('profile_image')
                             ->label(__('users.fields.profile_image'))
-                            ->disk('public')
+                            ->disk('private')
                             ->directory('users/profiles')
                             ->image()
                             ->avatar()

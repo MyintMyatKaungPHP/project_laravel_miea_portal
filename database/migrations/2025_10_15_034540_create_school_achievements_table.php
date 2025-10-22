@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('site_setting_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('ac_year');
             $table->json('achievement_list');
-            $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

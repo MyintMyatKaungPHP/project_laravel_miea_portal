@@ -34,12 +34,4 @@ class Partner extends Model
     {
         return $query->where('is_active', true);
     }
-
-    /**
-     * Scope a query to order by the order column.
-     */
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('order');
-    }
 }

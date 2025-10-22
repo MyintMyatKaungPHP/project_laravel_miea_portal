@@ -14,6 +14,8 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Schemas\Schema;
 
 class SiteSettingForm
 {
@@ -56,37 +58,46 @@ class SiteSettingForm
                                 ->schema([
                                     TextInput::make('site_name')
                                         ->label('Site Name')
-                                        ->required()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->minLength(3)
+                                        ->helperText('Minimum 3 characters required'),
 
                                     Textarea::make('site_description')
                                         ->label('Site Description')
                                         ->rows(3)
-                                        ->maxLength(500),
+                                        ->maxLength(500)
+                                        ->minLength(10)
+                                        ->helperText('Minimum 10 characters required'),
 
                                     FileUpload::make('site_logo_light')
                                         ->label('Site Logo (Light Mode)')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/logos')
                                         ->maxSize(2048)
-                                        ->helperText('Max 2MB'),
+                                        ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/webp'])
+                                        ->helperText('Max 2MB, PNG/JPEG/WebP formats only'),
 
                                     FileUpload::make('site_logo_dark')
                                         ->label('Site Logo (Dark Mode)')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/logos')
                                         ->maxSize(2048)
-                                        ->helperText('Max 2MB'),
+                                        ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/webp'])
+                                        ->helperText('Max 2MB, PNG/JPEG/WebP formats only'),
 
                                     FileUpload::make('site_favicon')
                                         ->label('Favicon')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/logos')
                                         ->maxSize(512)
-                                        ->helperText('Max 512KB, PNG format recommended'),
+                                        ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/ico'])
+                                        ->helperText('Max 512KB, PNG/ICO format recommended'),
                                 ])->columns(2),
 
                             // Contact Information Section
@@ -96,24 +107,37 @@ class SiteSettingForm
                                 ->collapsed()
                                 ->schema([
                                     TextInput::make('contact_email')
-                                        ->label('Contact Email')
+                                        ->label('Primary Email')
                                         ->email()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Primary contact email address'),
+
+                                    TextInput::make('contact_email_2')
+                                        ->label('Secondary Email')
+                                        ->email()
+                                        ->maxLength(255)
+                                        ->helperText('Optional secondary email address'),
 
                                     TextInput::make('contact_phone')
                                         ->label('Primary Phone')
                                         ->tel()
-                                        ->maxLength(20),
+                                        ->maxLength(20)
+                                        ->minLength(10)
+                                        ->helperText('Primary contact phone number'),
 
                                     TextInput::make('contact_phone_2')
                                         ->label('Secondary Phone')
                                         ->tel()
-                                        ->maxLength(20),
+                                        ->maxLength(20)
+                                        ->minLength(10)
+                                        ->helperText('Optional secondary phone number'),
 
                                     Textarea::make('contact_address')
                                         ->label('Contact Address')
                                         ->rows(3)
                                         ->maxLength(500)
+                                        ->minLength(10)
+                                        ->helperText('Complete physical address')
                                         ->columnSpanFull(),
                                 ])->columns(2),
 
@@ -126,32 +150,38 @@ class SiteSettingForm
                                     TextInput::make('facebook_url')
                                         ->label('Facebook URL')
                                         ->url()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Full Facebook page URL'),
 
                                     TextInput::make('instagram_url')
                                         ->label('Instagram URL')
                                         ->url()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Full Instagram profile URL'),
 
                                     TextInput::make('linkedin_url')
                                         ->label('LinkedIn URL')
                                         ->url()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Full LinkedIn company/profile URL'),
 
                                     TextInput::make('youtube_url')
                                         ->label('YouTube URL')
                                         ->url()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Full YouTube channel URL'),
 
                                     TextInput::make('telegram_url')
                                         ->label('Telegram URL')
                                         ->url()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Full Telegram channel/group URL'),
 
                                     TextInput::make('tiktok_url')
                                         ->label('TikTok URL')
                                         ->url()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->helperText('Full TikTok profile URL'),
                                 ])->columns(2),
 
                             // Footer Section
@@ -176,6 +206,7 @@ class SiteSettingForm
                                         ->label('Footer Logo')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/footer')
                                         ->maxSize(2048)
                                         ->helperText('Max 2MB'),
@@ -219,11 +250,11 @@ class SiteSettingForm
                                 ->collapsible()
                                 ->collapsed()
                                 ->schema([
-                                    Toggle::make('page_under_contract')
+                                    Toggle::make('page_under_maintenance')
                                         ->label('Enable Page Under Maintenance')
                                         ->helperText('Show under maintenance message on homepage'),
 
-                                    Textarea::make('under_contract_message')
+                                    Textarea::make('under_maintenance_message')
                                         ->label('Under Maintenance Message')
                                         ->rows(3)
                                         ->placeholder('This page is currently under maintenance. Please check back soon.')
@@ -236,8 +267,8 @@ class SiteSettingForm
                                 ->collapsible()
                                 ->collapsed()
                                 ->schema([
-                                    TextInput::make('miea_school_name')
-                                        ->label('MIEA School Name')
+                                    TextInput::make('school_name')
+                                        ->label('School Name')
                                         ->maxLength(255)
                                         ->placeholder('MIEA International School'),
 
@@ -273,49 +304,61 @@ class SiteSettingForm
                                         ->url()
                                         ->maxLength(255)
                                         ->placeholder('/about'),
+
+                                    Toggle::make('hero_button_show')
+                                        ->label('Show Button')
+                                        ->helperText('Toggle to show/hide the hero button')
+                                        ->default(true),
                                 ])->columns(2),
 
-                            // Services Section
-                            Section::make('Services Section')
+                            // Service Cards Section
+                            Section::make('Service Cards Section')
                                 ->description('Service cards displayed on homepage')
                                 ->collapsible()
                                 ->collapsed()
                                 ->schema([
-                                    Repeater::make('services')
-                                        ->label('Services')
+                                    Repeater::make('service_cards')
+                                        ->label('Service Cards')
                                         ->schema([
-                                            TextInput::make('name')
-                                                ->label('Service Name')
-                                                ->required()
-                                                ->maxLength(255),
+                                            TextInput::make('title')
+                                                ->label('Title')
+                                                ->maxLength(255)
+                                                ->placeholder('A Level'),
 
-                                            Textarea::make('description')
-                                                ->label('Description')
+                                            Textarea::make('details')
+                                                ->label('Details')
                                                 ->rows(2)
-                                                ->required()
-                                                ->maxLength(500),
+                                                ->maxLength(500)
+                                                ->placeholder('Year 12 - Year 13 (iAS & iAL)'),
 
                                             FileUpload::make('image')
-                                                ->label('Service Image')
+                                                ->label('Background Image')
                                                 ->image()
                                                 ->imageEditor()
-                                                ->directory('site/services')
+                                                ->disk('public')
+                                                ->directory('site/service_cards')
                                                 ->maxSize(2048)
                                                 ->helperText('Max 2MB'),
 
-                                            TextInput::make('order')
-                                                ->label('Order')
-                                                ->numeric()
-                                                ->default(0)
-                                                ->helperText('Lower number appears first'),
+                                            ColorPicker::make('overlay_color')
+                                                ->label('Overlay Color')
+                                                ->default('#ef4444')
+                                                ->helperText('Color for hover overlay effect')
+                                                ->rgb()
+                                                ->hex(),
 
-                                            Toggle::make('is_active')
+                                            TextInput::make('link')
+                                                ->label('Link')
+                                                ->placeholder('/programmes#a-level')
+                                                ->helperText('Link to navigate when card is clicked'),
+
+                                            Toggle::make('active')
                                                 ->label('Active')
                                                 ->default(true),
                                         ])
                                         ->columns(2)
                                         ->collapsible()
-                                        ->itemLabel(fn(array $state): ?string => $state['name'] ?? null),
+                                        ->itemLabel(fn(array $state): ?string => $state['title'] ?? null),
                                 ])->columns(1),
 
                             // About Section
@@ -345,6 +388,7 @@ class SiteSettingForm
                                         ->label('About Image')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/about')
                                         ->maxSize(3072)
                                         ->helperText('Max 3MB'),
@@ -402,33 +446,26 @@ class SiteSettingForm
                                         ->schema([
                                             TextInput::make('name')
                                                 ->label('Name')
-                                                ->required()
                                                 ->maxLength(255),
 
                                             TextInput::make('role')
                                                 ->label('Role/Title')
-                                                ->required()
                                                 ->maxLength(255),
 
                                             Textarea::make('content')
                                                 ->label('Testimonial Content')
                                                 ->rows(3)
-                                                ->required()
                                                 ->maxLength(1000),
 
                                             FileUpload::make('image')
                                                 ->label('Profile Image')
                                                 ->image()
                                                 ->imageEditor()
+                                                ->disk('public')
                                                 ->directory('site/testimonials')
                                                 ->maxSize(2048)
                                                 ->helperText('Max 2MB'),
 
-                                            TextInput::make('order')
-                                                ->label('Order')
-                                                ->numeric()
-                                                ->default(0)
-                                                ->helperText('Lower number appears first'),
 
                                             Toggle::make('is_active')
                                                 ->label('Active')
@@ -469,22 +506,17 @@ class SiteSettingForm
                                         ->schema([
                                             TextInput::make('name')
                                                 ->label('Partner Name')
-                                                ->required()
                                                 ->maxLength(255),
 
                                             FileUpload::make('image')
                                                 ->label('Partner Logo')
                                                 ->image()
                                                 ->imageEditor()
+                                                ->disk('public')
                                                 ->directory('site/partners')
                                                 ->maxSize(2048)
                                                 ->helperText('Max 2MB'),
 
-                                            TextInput::make('order')
-                                                ->label('Order')
-                                                ->numeric()
-                                                ->default(0)
-                                                ->helperText('Lower number appears first'),
 
                                             Toggle::make('is_active')
                                                 ->label('Active')
@@ -514,13 +546,11 @@ class SiteSettingForm
                                         ->schema([
                                             TextInput::make('name')
                                                 ->label('Name')
-                                                ->required()
                                                 ->maxLength(255)
                                                 ->placeholder('Dr. John Smith'),
 
                                             TextInput::make('role')
                                                 ->label('Role/Position')
-                                                ->required()
                                                 ->maxLength(255)
                                                 ->placeholder('Principal'),
 
@@ -528,7 +558,8 @@ class SiteSettingForm
                                                 ->label('Profile Image')
                                                 ->image()
                                                 ->imageEditor()
-                                                ->directory('leadership')
+                                                ->disk('public')
+                                                ->directory('site/leadership')
                                                 ->maxSize(2048)
                                                 ->helperText('Max 2MB'),
 
@@ -537,11 +568,6 @@ class SiteSettingForm
                                                 ->placeholder('#3B82F6')
                                                 ->helperText('Hex color code for card styling'),
 
-                                            TextInput::make('order')
-                                                ->label('Display Order')
-                                                ->numeric()
-                                                ->default(0)
-                                                ->helperText('Lower numbers appear first'),
 
                                             Toggle::make('is_active')
                                                 ->label('Active')
@@ -563,6 +589,7 @@ class SiteSettingForm
                                         ->label('Organisational Structure (Light Mode)')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/org-structure')
                                         ->maxSize(5120)
                                         ->helperText('Max 5MB - Image for light theme')
@@ -572,6 +599,7 @@ class SiteSettingForm
                                         ->label('Organisational Structure (Dark Mode)')
                                         ->image()
                                         ->imageEditor()
+                                        ->disk('public')
                                         ->directory('site/org-structure')
                                         ->maxSize(5120)
                                         ->helperText('Max 5MB - Image for dark theme')
@@ -597,7 +625,6 @@ class SiteSettingForm
                                         ->schema([
                                             TextInput::make('ac_year')
                                                 ->label('Academic Year')
-                                                ->required()
                                                 ->maxLength(255)
                                                 ->placeholder('2024-2025'),
 
@@ -606,11 +633,6 @@ class SiteSettingForm
                                                 ->placeholder('Add achievement')
                                                 ->helperText('Enter each achievement as a separate item'),
 
-                                            TextInput::make('order')
-                                                ->label('Display Order')
-                                                ->numeric()
-                                                ->default(0)
-                                                ->helperText('Lower numbers appear first'),
 
                                             Toggle::make('is_active')
                                                 ->label('Active')
@@ -645,7 +667,6 @@ class SiteSettingForm
                                                     'Upper Secondary Programme' => 'Upper Secondary Programme',
                                                     'Lower Secondary Programme' => 'Lower Secondary Programme',
                                                 ])
-                                                ->required()
                                                 ->searchable()
                                                 ->unique(),
 
@@ -654,7 +675,8 @@ class SiteSettingForm
                                                 ->image()
                                                 ->imageEditor()
                                                 ->multiple()
-                                                ->directory('programmes/images')
+                                                ->disk('public')
+                                                ->directory('site/programmes')
                                                 ->maxSize(3072)
                                                 ->helperText('Multiple images for this programme - Max 3MB each')
                                                 ->columnSpanFull(),

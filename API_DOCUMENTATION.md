@@ -760,7 +760,8 @@ GET /api/site-settings/hero-section
         "intro_text": "Welcome to MIEA",
         "hero_image": "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
         "button_text": "Learn More",
-        "button_link": "/about"
+        "button_link": "/about",
+        "button_show": true
     }
 }
 ```
@@ -954,7 +955,8 @@ GET /api/site-settings/all
                 "intro_text": "Welcome to MIEA",
                 "hero_image": "http://project_laravel_miea_portal.test/storage/hero/image1.jpg",
                 "button_text": "Learn More",
-                "button_link": "/about"
+                "button_link": "/about",
+                "button_show": true
             },
             "about_section": {
                 "title": "About MIEA",
@@ -980,16 +982,16 @@ GET /api/site-settings/all
 
 ---
 
-## Services API
+## Service Cards API
 
-Base Path: `/api/services`
+Base Path: `/api/service-cards`
 
-### List All Services
+### List All Service Cards
 
-Get all active services.
+Get all active service cards.
 
 ```http
-GET /api/services
+GET /api/service-cards
 ```
 
 **Response (200):**
@@ -1000,18 +1002,61 @@ GET /api/services
     "data": [
         {
             "id": 1,
-            "name": "Quality Education",
-            "description": "World-class education standards",
-            "image_url": "http://project_laravel_miea_portal.test/storage/services/service1.jpg"
+            "title": "A Level",
+            "details": "Year 12 - Year 13 (iAS & iAL)",
+            "image": "http://project_laravel_miea_portal.test/storage/service-cards/graduation2024.jpg",
+            "overlay_color": "#ef4444",
+            "link": "/programmes#a-level"
+        },
+        {
+            "id": 2,
+            "title": "Upper Secondary Level",
+            "details": "Year 10 - Year 11 (iGCSE)",
+            "image": "http://project_laravel_miea_portal.test/storage/service-cards/graduation2024.jpg",
+            "overlay_color": "#22c55e",
+            "link": "/programmes#upper-secondary"
+        },
+        {
+            "id": 3,
+            "title": "Lower Secondary Level",
+            "details": "Year 7 - Year 8 - Year 9 (Pre-iGCSE)",
+            "image": "http://project_laravel_miea_portal.test/storage/service-cards/graduation2024.jpg",
+            "overlay_color": "#3b82f6",
+            "link": "/programmes#lower-secondary"
         }
     ]
 }
 ```
 
-### Get Single Service
+### Get Single Service Card
 
 ```http
-GET /api/services/{id}
+GET /api/service-cards/{id}
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "title": "A Level",
+        "details": "Year 12 - Year 13 (iAS & iAL)",
+        "image": "http://project_laravel_miea_portal.test/storage/service-cards/graduation2024.jpg",
+        "overlay_color": "#ef4444",
+        "link": "/programmes#a-level"
+    }
+}
+```
+
+**Error Response (404):**
+
+```json
+{
+    "success": false,
+    "message": "Service card not found"
+}
 ```
 
 ---

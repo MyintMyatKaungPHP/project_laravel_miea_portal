@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('role');
             $table->string('image')->nullable();
             $table->string('color_code')->default('#3B82F6'); // Default blue color
-            $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
+            $table->foreignId('site_setting_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

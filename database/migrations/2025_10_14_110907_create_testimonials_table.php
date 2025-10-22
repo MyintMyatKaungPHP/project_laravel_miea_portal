@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('role');
             $table->text('content');
             $table->string('image')->nullable();
-            $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
