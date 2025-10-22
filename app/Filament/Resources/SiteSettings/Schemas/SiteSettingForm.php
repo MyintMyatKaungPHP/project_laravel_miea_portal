@@ -349,8 +349,15 @@ class SiteSettingForm
 
                                             TextInput::make('link')
                                                 ->label('Link')
-                                                ->placeholder('/programmes#a-level')
+                                                ->placeholder('/programmes')
                                                 ->helperText('Link to navigate when card is clicked'),
+
+                                            TextInput::make('tag_name')
+                                                ->label('Tag ID')
+                                                ->maxLength(255)
+                                                ->placeholder('1')
+                                                ->helperText('Tag name for categorization')
+                                                ->prefix('#'),
 
                                             Toggle::make('active')
                                                 ->label('Active')
