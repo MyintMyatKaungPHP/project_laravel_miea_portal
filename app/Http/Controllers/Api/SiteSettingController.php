@@ -366,6 +366,23 @@ class SiteSettingController extends Controller
     }
 
     /**
+     * Get moto section data
+     */
+    public function getMotoSection(): JsonResponse
+    {
+        $settings = SiteSetting::current();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'image' => $settings->moto_image_url,
+                'light_image' => $settings->moto_image_light_url,
+                'dark_image' => $settings->moto_image_dark_url,
+            ]
+        ]);
+    }
+
+    /**
      * Get service cards data
      */
     public function getServiceCards(): JsonResponse

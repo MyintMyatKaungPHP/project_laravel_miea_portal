@@ -81,6 +81,11 @@ class SiteSetting extends Model
         // About Page - Organisational Structure
         'org_structure_image_light',
         'org_structure_image_dark',
+
+        // Moto Section
+        'moto_image',
+        'moto_image_light',
+        'moto_image_dark',
     ];
 
     /**
@@ -191,6 +196,29 @@ class SiteSetting extends Model
         return $this->org_structure_image_dark ? Storage::url($this->org_structure_image_dark) : null;
     }
 
+    /**
+     * Get the moto image URL.
+     */
+    public function getMotoImageUrlAttribute(): ?string
+    {
+        return $this->moto_image ? Storage::url($this->moto_image) : null;
+    }
+
+    /**
+     * Get the moto image light URL.
+     */
+    public function getMotoImageLightUrlAttribute(): ?string
+    {
+        return $this->moto_image_light ? Storage::url($this->moto_image_light) : null;
+    }
+
+    /**
+     * Get the moto image dark URL.
+     */
+    public function getMotoImageDarkUrlAttribute(): ?string
+    {
+        return $this->moto_image_dark ? Storage::url($this->moto_image_dark) : null;
+    }
 
     /**
      * Get the leadership relationship.

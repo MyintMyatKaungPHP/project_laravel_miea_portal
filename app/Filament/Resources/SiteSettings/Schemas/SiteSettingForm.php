@@ -400,19 +400,56 @@ class SiteSettingForm
                                         ->maxSize(3072)
                                         ->helperText('Max 3MB'),
 
-                                    Textarea::make('mission')
+                                    RichEditor::make('mission')
                                         ->label('Mission Statement')
-                                        ->rows(4)
-                                        ->maxLength(1000)
-                                        ->placeholder('Our mission is to...')
+                                        ->toolbarButtons([
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'bulletList',
+                                            'orderedList',
+                                            'link',
+                                        ])
                                         ->columnSpanFull(),
 
-                                    Textarea::make('vision')
+                                    RichEditor::make('vision')
                                         ->label('Vision Statement')
-                                        ->rows(4)
-                                        ->maxLength(1000)
-                                        ->placeholder('Our vision is to...')
+                                        ->toolbarButtons([
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'bulletList',
+                                            'orderedList',
+                                            'link',
+                                        ])
                                         ->columnSpanFull(),
+                                ])->columns(2),
+
+                            // Moto Image Section
+                            Section::make('Moto Images')
+                                ->description('Upload moto section images for light and dark modes')
+                                ->collapsible()
+                                ->collapsed()
+                                ->schema([
+                                    FileUpload::make('moto_image_light')
+                                        ->label('Moto Image (Light Mode)')
+                                        ->image()
+                                        ->imageEditor()
+                                        ->disk('public')
+                                        ->directory('site/moto')
+                                        ->maxSize(5120)
+                                        ->helperText('Max 5MB - Moto section image for light theme')
+                                        ->columnSpan(1),
+
+                                    FileUpload::make('moto_image_dark')
+                                        ->label('Moto Image (Dark Mode)')
+                                        ->image()
+                                        ->imageEditor()
+                                        ->disk('public')
+                                        ->directory('site/moto')
+                                        ->maxSize(5120)
+                                        ->helperText('Max 5MB - Moto section image for dark theme')
+                                        ->columnSpan(1),
                                 ])->columns(2),
 
                             // Achievement Section
@@ -533,6 +570,8 @@ class SiteSettingForm
                                         ->collapsible()
                                         ->itemLabel(fn(array $state): ?string => $state['name'] ?? null),
                                 ])->columns(1),
+
+
                         ]),
 
                     // Organizational Structure Page Tab

@@ -105,6 +105,7 @@ Route::prefix('site-settings')->group(function () {
     Route::get('homepage', [SiteSettingController::class, 'getHomepageSettings']);
     Route::get('hero-section', [HeroSectionController::class, 'getHeroSection']);
     Route::get('about-section', [SiteSettingController::class, 'getAboutSection']);
+    Route::get('moto-section', [SiteSettingController::class, 'getMotoSection']);
     Route::get('achievements', [SiteSettingController::class, 'getAchievements']);
     Route::get('intro-video', [SiteSettingController::class, 'getIntroVideo']);
 

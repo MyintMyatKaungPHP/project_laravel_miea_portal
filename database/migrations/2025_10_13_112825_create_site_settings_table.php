@@ -85,6 +85,10 @@ return new class extends Migration
             $table->string('org_structure_image_light')->nullable();
             $table->string('org_structure_image_dark')->nullable();
 
+            // Moto Section
+            $table->string('moto_image_light')->nullable();
+            $table->string('moto_image_dark')->nullable();
+
             $table->timestamps();
         });
     }
