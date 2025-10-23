@@ -12,13 +12,11 @@ class Testimonial extends Model
         'role',
         'content',
         'image',
-        'order',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'order' => 'integer',
     ];
 
     /**

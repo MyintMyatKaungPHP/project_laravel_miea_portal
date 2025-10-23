@@ -503,12 +503,13 @@ class SiteSettingForm
 
                                             FileUpload::make('image')
                                                 ->label('Profile Image')
-                                                ->image()
+                                                ->avatar()
                                                 ->imageEditor()
                                                 ->disk('public')
                                                 ->directory('site/testimonials')
                                                 ->maxSize(2048)
-                                                ->helperText('Max 2MB'),
+                                                ->circleCropper()
+                                                ->helperText('Max 2MB - Circle crop for profile image'),
 
 
                                             Toggle::make('is_active')

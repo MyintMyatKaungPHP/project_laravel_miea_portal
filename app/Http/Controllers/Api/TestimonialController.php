@@ -15,7 +15,6 @@ class TestimonialController extends Controller
     public function index(): JsonResponse
     {
         $testimonials = Testimonial::active()
-            ->ordered()
             ->get()
             ->map(function ($testimonial) {
                 return [
@@ -23,8 +22,7 @@ class TestimonialController extends Controller
                     'name' => $testimonial->name,
                     'role' => $testimonial->role,
                     'content' => $testimonial->content,
-                    'image' => $testimonial->image_url,
-                    'order' => $testimonial->order,
+                    'image' => $testimonial->image_url ? url($testimonial->image_url) : null,
                 ];
             });
 
@@ -53,8 +51,7 @@ class TestimonialController extends Controller
                 'name' => $testimonial->name,
                 'role' => $testimonial->role,
                 'content' => $testimonial->content,
-                'image' => $testimonial->image_url,
-                'order' => $testimonial->order,
+                'image' => $testimonial->image_url ? url($testimonial->image_url) : null,
             ]
         ]);
     }
@@ -69,7 +66,6 @@ class TestimonialController extends Controller
             'role' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|max:2048',
-            'order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -83,8 +79,7 @@ class TestimonialController extends Controller
                 'name' => $testimonial->name,
                 'role' => $testimonial->role,
                 'content' => $testimonial->content,
-                'image' => $testimonial->image_url,
-                'order' => $testimonial->order,
+                'image' => $testimonial->image_url ? url($testimonial->image_url) : null,
                 'is_active' => $testimonial->is_active,
             ]
         ], 201);
@@ -100,7 +95,6 @@ class TestimonialController extends Controller
             'role' => 'sometimes|string|max:255',
             'content' => 'sometimes|string',
             'image' => 'nullable|image|max:2048',
-            'order' => 'sometimes|integer|min:0',
             'is_active' => 'sometimes|boolean',
         ]);
 
@@ -114,8 +108,7 @@ class TestimonialController extends Controller
                 'name' => $testimonial->name,
                 'role' => $testimonial->role,
                 'content' => $testimonial->content,
-                'image' => $testimonial->image_url,
-                'order' => $testimonial->order,
+                'image' => $testimonial->image_url ? url($testimonial->image_url) : null,
                 'is_active' => $testimonial->is_active,
             ]
         ]);
